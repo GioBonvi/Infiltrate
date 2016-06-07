@@ -1,0 +1,26 @@
+{
+  "locations": [
+    {
+      "name": "Sottomarino",
+      "roles": [
+        "Spia",
+        "Capitano",
+        "Marinaio",
+        "Cambusiere",
+        "Sonarista",
+        "Meccanico"
+      ]
+    },
+    {
+      "name": "Ospedale",
+      "roles": [
+        "Spia",
+        "Chirurgo",
+        "Vistatore",
+        "Malato",
+        "Morto",
+        "Specializzando"
+      ]
+    }    
+  ]
+}
