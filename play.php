@@ -161,6 +161,21 @@ else
 
 <button id="btn-stop" hidden>Termina partita</button>
 
+<br><br>
+
+<div style="text-align: center">
+    <p>Skyfall</p>
+    <audio style="width:90%" src="media/Skyfall.mp3" controls></audio>
+</div>
+<div style="text-align: center">
+    <p>Skyfall (instrumental)</p>
+    <audio style="width:90%" src="media/Skyfall (instrumental).mp3" controls></audio>
+</div>
+<div style="text-align: center">
+    <p>James Bond theme</p>
+    <audio style="width:90%" src="media/James Bond theme.mp3" controls></audio>
+</div>
+
 <script>
 // This will contain all the strings translated into the chosen language.
 resource = {};
