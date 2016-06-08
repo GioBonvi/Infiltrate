@@ -147,19 +147,41 @@ else
 <ul id="players-list">
 </ul>
 
+<h2>Location</h2>
+<ul id="location-list">
+</ul>
+
 <button id="btn-start">Inizio partita</button>
 
 <button id="btn-stop" hidden>Termina partita</button>
 
 <script>
+// This will contain all the strings translated into the chosen language.
 resource = {};
-endTime = 0;
 // Setup language.
 $.get("lang/<?php echo $language;?>.json")
 .done(function(data){
-    resource = data;
+    resource = data;    
+    // Print out the list  of the locations.
+    resource['locations'].forEach(function(location, index) {
+        $("#location-list").append('<li data="on">' + location['name'] + '</li>');
+    });
+    $("#location-list li").click(function() {
+        if ($(this).attr("data") == "on")
+        {
+            $(this).attr("data", "off")
+        }
+        else
+        {
+            $(this).attr("data", "on")
+        }
+    });
 });
+// This will contain the unix timestamp of the end of the match.
+endTime = 0;
 
+
+// Update the page every 10 seconds and the clock every half second.
 getUpdate();
 setInterval(getUpdate, 10000);
 setInterval(setTimer, 500);
@@ -197,7 +219,7 @@ function setTimer()
         var diff = endTime - Math.floor(Date.now() / 1000)
         var m = Math.floor(diff / 60);
         var s = diff % 60;
-        $("#timer").html(m + ":" + s);
+        $("#timer").html(("0" + m).slice (-2) + ":" + ("0" + s).slice (-2));
     }
 }
 
@@ -269,6 +291,16 @@ function getUpdate()
             else
             {
                 $("#players-list").append('<li data="on">' + name + '</li>');
+            }
+        });
+        $("#players-list li").click(function() {
+            if ($(this).attr("data") == "on")
+            {
+                $(this).attr("data", "off")
+            }
+            else
+            {
+                $(this).attr("data", "on")
             }
         });
     })

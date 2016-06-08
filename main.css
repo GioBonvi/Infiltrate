@@ -43,6 +43,17 @@ input[type="submit"]:hover, button:hover{
     background-color: #f8f1ba;
 }
 
-input[type="text"]:focus, select:focus, input[type="submit"]:focus {
+input[type="text"]:focus, select:focus, input[type="submit"]:focus, button:focus {
     outline: none;
+}
+
+#timer {
+    width: 100%;
+    text-align: center;
+    font-size: 4em;
+    margin: 0;
+}
+
+#players-list li[data="off"], #location-list li[data="off"] {
+    text-decoration: line-through;
 }
