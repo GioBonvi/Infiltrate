@@ -1,3 +1,19 @@
+<?php
+$keyCode = "";
+// Check if a key was specified.
+if (isset($_GET['key']) && strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
+{
+    $keyCode = $_GET['key'];
+    $dbPath = "db/" . $keyCode . ".db";
+
+    // Check if the database exists.
+    if(! file_exists($dbPath))
+    {
+        $keyCode = "";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -30,7 +46,7 @@
 <form method="GET" action="play.php">
     <input type="text" name="name" placeholder="Nome">
     <br><br>
-    <input type="text" name="key" placeholder="Chiave">
+    <input type="text" name="key" placeholder="Chiave" value="<?php echo $keyCode;?>">
     <br><br>
     <label for="language">Lingua:</label> 
     <select name="language">

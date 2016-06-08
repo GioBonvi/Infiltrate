@@ -136,6 +136,11 @@ else
 <body>
 
 <h1>Spyfall</h1>
+<script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*(name|language)=[a-zA-Z0-9]*&*/g, "");</script>
+<p>Per invitare altri giocatori condividi questo link:<br>
+<script>document.write(shareLink);</script></p>
+<p><a id="whatsapp-share" href="">Clicca qui</a> per condividerlo via Whatsapp.</p>
+<script>$("#whatsapp-share").attr("href", "whatsapp://send?text=" + shareLink);</script>
 
 <p id="timer"></p>
 
@@ -243,7 +248,9 @@ function getUpdate()
         if (data['match']['Playing'])
         {
             endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
+            $("#toggle-player-data").show();
             $("#player-data").empty();
+            $("#player-data").show();
             var name = "<p>Nome: " + data['player']['Name'] + "</p>";
             var role = "<p>Ruolo: " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
             var location = "<p>Luogo: " + (data['player']['Role'] != 0 ? getLocation(data['match']['Location']) : "Sconosciuto") + "</p>";
@@ -262,7 +269,9 @@ function getUpdate()
         else
         {
             endTime = 0;
+            $("#toggle-player-data").hide();
             $("#player-data").empty();
+            $("#player-data").show();
             $("#player-data").html("Non stai ancora giocando...");
             if (data['player']['Host'])
             {
