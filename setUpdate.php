@@ -4,7 +4,7 @@ session_start(['cookie_lifetime' => 86400]);
 
 include_once('settings.php');
 
-// Exit if no key.
+// Exit if no key or action is specified.
 if (! (isset($_GET['key']) && isset($_GET['action'])))
 {
     $output['error'] = true;
@@ -12,60 +12,63 @@ if (! (isset($_GET['key']) && isset($_GET['action'])))
     echo json_encode($output);
     exit;
 }
-if ($_GET['action'] == "play")
+
+// Verify that key is valid.
+if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
-    if (! isset($_GET['timestamp']))
-    {
-        $output['error'] = true;
-        $output['status'] = "bad-params";
-        echo json_encode($output);
-        exit;
-    }
-    
-    // Check if timestamp is valid.
-    if (! ctype_digit($_GET['timestamp']))
-    {
-        $output['error'] = true;
-        $output['status'] = "bad-timestamp";
-        echo json_encode($output);
-        exit;
-    }
+    $keyCode = $_GET['key'];
+}
+else
+{
+    $output['error'] = true;
+    $output['status'] = "bad-key";
+    echo json_encode($output);
+    exit;
+}
 
-    // Check if key is valid.
-    if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
-    {
-        $keyCode = $_GET['key'];
-    }
-    else
+$dbPath = "db/" . $keyCode . ".db";
+
+// Verify database existence.
+if(! file_exists($dbPath))
+{
+    $output['error'] = true;
+    $output['status'] = "bad-key";
+    echo json_encode($output);
+    exit;
+}
+
+// Open database connection.
+if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
+{
+    // Verify that the player is the host of match (using session_id).
+    $stmt = $db->prepare("SELECT * FROM Players WHERE (SessID=:sessID AND Host=1)");
+    $stmt->bindValue(":sessID", session_id());
+    $player = $stmt->execute()->fetchArray();
+    if (! $player)
     {
         $output['error'] = true;
-        $output['status'] = "bad-key";
-        echo json_encode($output);
-        exit;
-    }
-
-    $dbPath = "db/" . $keyCode . ".db";
-
-    // Check database exists.
-    if(! file_exists($dbPath))
-    {
-        $output['error'] = true;
-        $output['status'] = "bad-key";
+        $output['status'] = "bad-auth";
         echo json_encode($output);
         exit;
     }
 
-
-    if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
+    if ($_GET['action'] == "play")
     {
-        // Check if the player is the host of match (using session_id).
-        $stmt = $db->prepare("SELECT * FROM Players WHERE (SessID=:sessID AND Host=1)");
-        $stmt->bindValue(":sessID", session_id());
-        $player = $stmt->execute()->fetchArray();
-        if (! $player)
+        // Start the match.
+        
+        if (! isset($_GET['timestamp']))
         {
             $output['error'] = true;
-            $output['status'] = "bad-auth";
+            $output['status'] = "bad-params";
+            echo json_encode($output);
+            exit;
+        }
+        
+        // Check if timestamp is valid.
+        if (! ctype_digit($_GET['timestamp']))
+        {
+            $output['error'] = true;
+            $output['status'] = "bad-timestamp";
             echo json_encode($output);
             exit;
         }
@@ -98,77 +101,37 @@ if ($_GET['action'] == "play")
         $stmt->bindValue(":name", $players[rand(0, sizeof($players) - 1)]);
         $stmt->execute();
         $output['error'] = false;
+        $output['message'] = "game-started";
         echo json_encode($output);
         exit;
     }
-    else
+    else if ($_GET['action'] == "stop")
     {
-        $output['error'] = true;
-        $output['status'] = "database-unknown-error";
-        echo json_encode($output);
-        exit;
-    }
-}
-else if ($_GET['action'] == "stop")
-{
-    // Check if key is valid.
-    if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
-    {
-        $keyCode = $_GET['key'];
-    }
-    else
-    {
-        $output['error'] = true;
-        $output['status'] = "bad-key";
-        echo json_encode($output);
-        exit;
-    }
-
-    $dbPath = "db/" . $keyCode . ".db";
-
-    // Check database exists.
-    if(! file_exists($dbPath))
-    {
-        $output['error'] = true;
-        $output['status'] = "bad-key";
-        echo json_encode($output);
-        exit;
-    }
-
-    if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
-    {
-        // Check if the player is the host of match (using session_id).
-        $stmt = $db->prepare("SELECT * FROM Players WHERE (SessID=:sessID AND Host=1)");
-        $stmt->bindValue(":sessID", session_id());
-        $player = $stmt->execute()->fetchArray();
-        if (! $player)
-        {
-            $output['error'] = true;
-            $output['status'] = "bad-auth";
-            echo json_encode($output);
-            exit;
-        }
+        // Stop the match.
         
         // Update to "No match going on".
         $stmt = $db->prepare("DELETE FROM Match");
         $stmt->execute();
         
         $output['error'] = false;
+        $output['message'] = "game-stopped";
         echo json_encode($output);
         exit;
     }
     else
     {
+        // Wrong action.
         $output['error'] = true;
-        $output['status'] = "database-unknown-error";
+        $output['status'] = "bad-params";
         echo json_encode($output);
         exit;
     }
 }
 else
 {
+    // Unknown error opening the database.
     $output['error'] = true;
-    $output['status'] = "bad-params";
+    $output['status'] = "database-unknown-error";
     echo json_encode($output);
     exit;
 }
