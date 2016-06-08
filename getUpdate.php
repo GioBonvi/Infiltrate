@@ -2,8 +2,6 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start(['cookie_lifetime' => 86400]);
 
-include_once('settings.php');
-
 // Exit if no key.
 if (! isset($_GET['key']))
 {

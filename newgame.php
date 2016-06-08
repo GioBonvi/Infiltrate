@@ -2,8 +2,6 @@
 header('Content-Type: text/html; charset=utf-8');
 session_start(['cookie_lifetime' => 86400]);
 
-include_once('settings.php');
-
 // Exit if some required parameter is missing.
 if (! (isset($_POST['name']) && isset($_POST['language'])))
 {
@@ -23,7 +21,7 @@ else
 }
 
 // Check users's language.
-if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("/lang/" . $_GET['language'] . ".json"))
+if (isset($_GET['language']) && file_exists("lang/" . $_GET['language'] . ".json"))
 {
     $language = $_GET['language'];
 }
@@ -42,7 +40,14 @@ do
 // Check host's name.
 $name = preg_match("/^[a-z0-9]+$/i", $_POST['name']) ? $_POST['name'] : "admin";
 // Check host's language.
-$language = in_array($_POST['language'], $okLangs) ? $_POST['language'] : $okLangs[0];
+if (isset($_POST['language']) && file_exists("lang/" . $_POST['language'] . ".json"))
+{
+    $language = $_POST['language'];
+}
+else
+{
+    $language = $_POST['language'];
+}
 
 // Create and initialize the SQLite database.
 if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))

@@ -2,8 +2,6 @@
 header('Content-Type: text/html; charset=utf-8');
 session_start(['cookie_lifetime' => 86400]);
 
-include_once('settings.php');
-
 // Exit if no name or key
 if (! (isset($_GET['name']) && isset($_GET['key'])))
 {
@@ -22,7 +20,7 @@ else
 }
 
 // Check users's language.
-if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("/lang/" . $_GET['language'] . ".json"))
+if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("lang/" . $_GET['language'] . ".json"))
 {
     $language = $_GET['language'];
 }
@@ -93,7 +91,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt = $db->prepare("INSERT INTO players (SessID,Name,First,Host,Role,Lang) VALUES (:sessID,:name,0,0,:role,:lang)");
         $stmt->bindValue(":sessID", session_id());
         $stmt->bindValue(":name", $name);
-        $stmt->bindValue(":role", rand(1, $numberOfRoles));
+        $stmt->bindValue(":role", -1);
         $stmt->bindValue(":lang", $language);
         if (! $stmt->execute())
         {
@@ -219,6 +217,7 @@ $("#btn-start").click(function()
     .done(function(data)
     {
         console.log(data);
+        getUpdate();
     });
 });
 
@@ -228,6 +227,7 @@ $("#btn-stop").click(function()
     .done(function(data)
     {
         console.log(data);
+        getUpdate();
     });
 });
 

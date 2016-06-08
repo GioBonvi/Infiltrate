@@ -2,8 +2,6 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start(['cookie_lifetime' => 86400]);
 
-include_once('settings.php');
-
 // Exit if no key or action is specified.
 if (! (isset($_GET['key']) && isset($_GET['action'])))
 {
@@ -56,17 +54,32 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     {
         // Start the match.
         
-        // Update the match status.
+        // Choose a random location.
+        // Use EN.json, but it would be the same with every other file.
+        $array = json_decode(file_get_contents("lang/EN.json"));
+        $numberOfLocations = sizeof($array->locations); 
+        $locationIndex = rand(0, $numberOfLocations - 1);
+        // Thh duration depends on the number of players.
+        $stmt = $db->prepare("SELECT Name FROM Players");
+        $res = $stmt->execute();
+        $playersN = 0;
+        while ($res->fetchArray())
+        {
+            $playersN = $playersN + 1;
+        }
+        // Duration = 10 minutes if 5 or less players.
+        // Duration = number of players + 5 if more than 5 players.
+        $duration = ($playersN <= 5 ? 10 : $playerN + 5) * 60;
         
-        // TODO: Regulate match duration counting players.
-        // Set new match to playing and choose the location.
         $stmt = $db->prepare("INSERT INTO Match (Location,Playing,EndTime) VALUES (:loc,1,:endTime)");
-        $stmt->bindValue(":loc", rand(0, $numberOfLocations - 1));
-        $stmt->bindValue(":endTime", time() + 10*60);
+        $stmt->bindValue(":loc", $locationIndex);
+        $stmt->bindValue(":endTime", time() + $duration);
         $stmt->execute();
         
-        // TODO: Assign random roles using file with roles.
         // Assign a random role to everyone.
+        $array = json_decode(file_get_contents("lang/EN.json"));
+        $numberOfLocations = sizeof($array->locations); 
+        $numberOfRoles = sizeof($array->locations[$locationIndex]->roles); // Use EN, but it would be the same with every other file.
         $stmt = $db->prepare("SELECT Name FROM Players");
         $res = $stmt->execute();
         $players = array();
