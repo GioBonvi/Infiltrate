@@ -127,6 +127,9 @@ else
     <meta charset="UTF-8">
     <title>Spyfall</title>
     <meta name="author" content="Giorgio Bonvicini">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Marvel:700,400'>
+    <link rel='stylesheet' type='text/css' href="main.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
@@ -136,11 +139,11 @@ else
 
 <p id="timer"></p>
 
-<h4>Dati personaggio</h4>
+<h2>Dati personaggio</h2>
 <div id="player-data">
 </div>
 
-<h4>Giocatori</h4>
+<h2>Giocatori</h2>
 <ul id="players-list">
 </ul>
 

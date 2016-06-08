@@ -1,0 +1,48 @@
+body {
+    background-color: #fcf9e2;
+    font-family: Marvel, sans-serif;
+    font-size: 1.5em;
+}
+
+h1 {
+    font-style: italic;
+    font-size: 2em;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+input, select, button {
+    background-color: #fcf9e2;
+    font-size: 1em;
+    height: 1.5em;
+    border-radius: 0.5em;
+    border: 2px solid #888a85;
+    font-family: Marvel, sans-serif;
+    font-weight: 700;
+}
+
+input[type="text"] {
+    padding: 0.2em;
+}
+
+input[type="text"]::-webkit-input-placeholder {
+   color: #555753;
+}
+input[type="text"]::-moz-placeholder {
+   color: #555753; 
+}
+input[type="text"]:-ms-input-placeholder { 
+    color: #555753;
+} 
+
+input[type="submit"]:hover, button:hover{
+    background-color: #f8f1ba;
+}
+
+input[type="text"]:focus, select:focus, input[type="submit"]:focus {
+    outline: none;
+}
