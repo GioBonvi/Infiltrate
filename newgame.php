@@ -47,12 +47,12 @@ $language = in_array($_POST['language'], $okLangs) ? $_POST['language'] : $okLan
 // Create and initialize the SQLite database.
 if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 { 
-    $db->exec("CREATE TABLE 'Players' ('SessID' TEXT NOT NULL UNIQUE, 'Name' TEXT NOT NULL UNIQUE, 'Host' INTEGER NOT NULL DEFAULT 0, 'Role' INTEGER NOT NULL, 'Lang' TEXT NOT NULL);");
+    $db->exec("CREATE TABLE 'Players' ('SessID' TEXT NOT NULL UNIQUE, 'Name' TEXT NOT NULL UNIQUE, 'Host' INTEGER NOT NULL DEFAULT 0, 'Role' INTEGER NOT NULL, 'First' INTEGER NOT NULL, 'Lang' TEXT NOT NULL);");
     $db->exec("CREATE TABLE 'Match' ('Location' INTEGER NOT NULL, 'Playing' INTEGER NOT NULL DEFAULT 0, 'EndTime' INTEGER NOT NULL);");
     echo "Database was created and initialized.<br>";   
     
     // Insert host's data into database.
-    $stmt = $db->prepare("INSERT INTO Players (SessID,Name,Host,Role,Lang) VALUES (:sessID,:name,1,:role,:lang)");
+    $stmt = $db->prepare("INSERT INTO Players (SessID,Name,First,Host,Role,Lang) VALUES (:sessID,:name,0,1,:role,:lang)");
     $stmt->bindValue(":sessID", session_id());
     $stmt->bindValue(":name", $name);
     $stmt->bindValue(":role", -1);

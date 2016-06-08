@@ -52,7 +52,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     }
     
     // Send only relevant data to the player.
-    $stmt = $db->prepare("SELECT Name FROM Players");
+    $stmt = $db->prepare("SELECT Name,First FROM Players");
     $res = $stmt->execute();
     while ($r = $res->fetchArray())
     {

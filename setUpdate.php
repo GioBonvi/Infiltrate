@@ -72,7 +72,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $players = array();
         while ($r = $res->fetchArray())
         {
-            $stmt1 = $db->prepare("UPDATE Players SET Role=:role WHERE Name=:name");
+            $stmt1 = $db->prepare("UPDATE Players SET Role=:role,First=0 WHERE Name=:name");
             $stmt1->bindValue(":role", rand(1, $numberOfRoles)); // 0 is the spy.
             $stmt1->bindValue(":name", $r['Name']);
             $stmt1->execute();
@@ -81,6 +81,11 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         
         // Choose a random player to be the spy.
         $stmt = $db->prepare("UPDATE Players SET Role=0 WHERE Name=:name");
+        $stmt->bindValue(":name", $players[rand(0, sizeof($players) - 1)]);
+        $stmt->execute();
+        
+        // Choose a random player to be the first.
+        $stmt = $db->prepare("UPDATE Players SET First=1 WHERE Name=:name");
         $stmt->bindValue(":name", $players[rand(0, sizeof($players) - 1)]);
         $stmt->execute();
         $output['error'] = false;

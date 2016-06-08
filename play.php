@@ -90,7 +90,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         // New player in this match.
         
         // Register him.
-        $stmt = $db->prepare("INSERT INTO players (SessID,Name,Host,Role,Lang) VALUES (:sessID,:name,0,:role,:lang)");
+        $stmt = $db->prepare("INSERT INTO players (SessID,Name,First,Host,Role,Lang) VALUES (:sessID,:name,0,0,:role,:lang)");
         $stmt->bindValue(":sessID", session_id());
         $stmt->bindValue(":name", $name);
         $stmt->bindValue(":role", rand(1, $numberOfRoles));
@@ -140,6 +140,7 @@ else
 <p id="timer"></p>
 
 <h2>Dati personaggio</h2>
+<div id="toggle-player-data">Mostra/nascondi</div>
 <div id="player-data">
 </div>
 
@@ -204,6 +205,10 @@ $("#btn-stop").click(function()
     });
 });
 
+$("#toggle-player-data").click(function() {
+    $("#player-data").toggle("medium");
+});
+
 function setTimer()
 {
     if (endTime == 0)
@@ -234,14 +239,15 @@ function getUpdate()
             return;
         }
         
-        // Set status
+        // Set status.
         if (data['match']['Playing'])
         {
             endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
             $("#player-data").empty();
+            var name = "<p>Nome: " + data['player']['Name'] + "</p>";
             var role = "<p>Ruolo: " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
-            var location = (data['player']['Role'] != 0 ? "<p>Luogo: " + getLocation(data['match']['Location']) + "</p>" : "");
-            $("#player-data").html(role + location);
+            var location = "<p>Luogo: " + (data['player']['Role'] != 0 ? getLocation(data['match']['Location']) : "Sconosciuto") + "</p>";
+            $("#player-data").html(name + role + location);
             if (data['player']['Host'])
             {
                 $("#btn-start").hide();
@@ -286,11 +292,11 @@ function getUpdate()
             var name = player['Name'];
             if (oldplayersOff.indexOf(name) >= 0)
             {
-                $("#players-list").append('<li data="off">' + name + '</li>');
+                $("#players-list").append('<li data="off">' + name + (player['First'] == 1 ? ' (primo)' : '') +'</li>');
             }
             else
             {
-                $("#players-list").append('<li data="on">' + name + '</li>');
+                $("#players-list").append('<li data="on">' + name + (player['First'] == 1 ? ' (primo)' : '') + '</li>');
             }
         });
         $("#players-list li").click(function() {
