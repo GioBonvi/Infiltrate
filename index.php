@@ -15,7 +15,6 @@ if (isset($_GET['key']) && strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Spyfall</title>
@@ -29,30 +28,32 @@ if (isset($_GET['key']) && strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']
 
 <h1>Spyfall</h1>
 
-<h2>Crea una nuova partita</h2>
+<h2 id="new-match-header">New game</h2>
 <form method="POST" action="newgame.php">
-    <input type="text" name="name" placeholder="Nome">
+    <input type="text" name="name" placeholder="Name">
     <br><br>
-    <label for="language">Lingua:</label> 
+    <label for="language">Language:</label> 
     <select name="language">
         <option value="IT">Italiano</option>
+        <option value="EN">English</option>
     </select><br><br>
-    <input type="submit" value="Nuova partita">
+    <input type="submit" value="New game">
 </form>
 
 <br><br>
 
-<h2>Unisciti ad un'altra partita</h2>
+<h2>Join an existing match</h2>
 <form method="GET" action="play.php">
-    <input type="text" name="name" placeholder="Nome">
+    <input type="text" name="name" placeholder="Name">
     <br><br>
-    <input type="text" name="key" placeholder="Chiave" value="<?php echo $keyCode;?>">
+    <input type="text" name="key" placeholder="Key" value="<?php echo $keyCode;?>">
     <br><br>
-    <label for="language">Lingua:</label> 
+    <label for="language">Language:</label> 
     <select name="language">
         <option value="IT">Italiano</option>
+        <option value="EN">English</option>
     </select><br><br>
-    <input type="submit" value="Unisciti">
+    <input type="submit" value="Join">
 </form>
 
 </body>

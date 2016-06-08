@@ -6,4 +6,5 @@ $okLangs = array("IT", "EN");
 $numberOfRoles = 5;
 // How many locations?
 $numberOfLocations = 2;
+
 ?>

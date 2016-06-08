@@ -1,14 +1,385 @@
 {
   "locations": [
     {
-      "name": "Sottomarino",
+      "name": "Aereoplano",
+      "roles": [
+        "Spia",
+        "Passeggero di prima classe",
+        "Passeggero di classe economica",
+        "Hostess",
+        "Pilota",
+        "Meccanico",
+        "Co-pilota",
+        "Addetto alla sicurezza",
+        "Dirottatore"
+      ]
+    },
+    {
+      "name": "Banca",
+      "roles": [
+        "Spia",
+        "Impiegato",
+        "Rapinatore",
+        "Direttore",
+        "Addetto alle pulizie",
+        "Ostaggio di una rapina",
+        "Guardia",
+        "Cliente",
+        "Autista di un furgone blindato"
+      ]
+    },
+    {
+      "name": "Spiaggia",
+      "roles": [
+        "Spia",
+        "Surfista",
+        "Bagnante",
+        "Bambino",
+        "Gelataio",
+        "Venditore ambulante di cocco",
+        "Cameriere del bar sulla spiaggia",
+        "Bagnino",
+        "Turista"
+      ]
+    },
+    {
+      "name": "Cattedrale",
+      "roles": [
+        "Spia",
+        "Prete",
+        "Vescovo",
+        "Papa",
+        "Mendicante",
+        "Peccatore",
+        "Corista",
+        "Turista",
+        "Sposo/a",
+        "Campanaro"
+      ]
+    },
+    {
+      "name": "Circo",
+      "roles": [
+        "Spia",
+        "Acrobata",
+        "Direttore",
+        "Ballerina",
+        "Addestratore di animali",
+        "Mangiafuoco",
+        "Pagliaccio",
+        "Visitatore",
+        "Bigliettaio",
+        "Prestigiatore"
+      ]
+    },
+    {
+      "name": "Festa aziendale",
+      "roles": [
+        "Spia",
+        "Intrattenitore",
+        "Imbucato",
+        "Manager",
+        "Impiegato",
+        "Segretario del manager",
+        "Ragazzo delle consegne",
+        "Moglie/marito di un impiegato",
+        "Manager della ditta concorrente"
+      ]
+    },
+    {
+      "name": "Esercito dei crociati",
+      "roles": [
+        "Spia",
+        "Monaco",
+        "Imperatore",
+        "Arciere",
+        "Servo",
+        "Prigioniero saraceno",
+        "Cavaliere",
+        "Spia saracena",
+        "Traditore",
+        "Nobile"
+      ]
+    },
+    {
+      "name": "Casinò",
+      "roles": [
+        "Barman",
+        "Capo della sicurezza",
+        "Baro",
+        "Buttafuori",
+        "Proprietario",
+        "Giocatore fortunato",
+        "Giocatore sfortunato",
+        "Giocatore ricco",
+        "Croupier"
+      ]
+    },
+    {
+      "name": "Centro benessere",
+      "roles": [
+        "Spia",
+        "Cliente",
+        "Massaggiatrice",
+        "Dermatologo",
+        "Estetista",
+        "Proprietario",
+        "Addetto alla manicure"
+      ]
+    },
+    {
+      "name": "Ambasciata",
+      "roles": [
+        "Spia",
+        "Guardia armata",
+        "Ambasciatore",
+        "Segretario dell'ambasciatore",
+        "Rifugiato",
+        "Agente segreto",
+        "Capo di Stato",
+        "Soldato"
+      ]
+    },
+    {
+      "name": "Hotel",
+      "roles": [
+        "Spia",
+        "Portiere",
+        "Guardia di sicurezza",
+        "Manager",
+        "Cuoco",
+        "Barista",
+        "Cliente",
+        "Servizio in camera",
+        "Addetto alle pulizie",
+        "Personaggio celebre"
+      ]
+    },
+    {
+      "name": "Base militare",
+      "roles": [
+        "Spia",
+        "Soldato semplice",
+        "Recluta",
+        "Generale",
+        "Medico",
+        "Cecchino",
+        "Rambo",
+        "Soldato di guardia",
+        "Carrista",
+        "Autista del generale"
+      ]
+    },
+    {
+      "name": "Studio cinematografico",
+      "roles": [
+        "Spia",
+        "Stuntman",
+        "Tecnico del suono",
+        "Regista",
+        "Addetto alla cinepresa",
+        "Costumista",
+        "Attore",
+        "Controfigura",
+        "Comparsa",
+        "Tecnico delle luci"
+      ]
+    },
+    {
+      "name": "Transatlantico",
+      "roles": [
+        "Spia",
+        "Cuoco",
+        "Passeggero",
+        "Barista",
+        "Cameriere",
+        "Capitano",
+        "Meccanico",
+        "Clandestino",
+        "Musicista",
+        "Passeggero ricco"
+      ]
+    },
+    {
+      "name": "Treno passeggeri",
+      "roles": [
+        "Spia",
+        "Passeggero di prima classe",
+        "Passeggero di classe economica",
+        "Meccanico",
+        "Capotreno",
+        "Controllore",
+        "Clandestino",
+        "Passeggero",
+        "Cuoco"
+      ]
+    },
+    {
+      "name": "Nave pirata",
+      "roles": [
+        "Spia",
+        "Cuoco",
+        "Schiavo",
+        "Cannoniere",
+        "Prigioniero",
+        "Capitano",
+        "Marinaio",
+        "Mozzo",
+        "Vedetta"
+      ]
+    },
+    {
+      "name": "Stazione polare",
+      "roles": [
+        "Spia",
+        "Medico",
+        "Geologo",
+        "Climatologo",
+        "Idrologo",
+        "Pilota",
+        "Operatore radio",
+        "Capo spedizione",
+        "Biologo",
+        "Ricercatore",
+        "Addetto alle provviste"
+      ]
+    },
+    {
+      "name": "Stazione di polizia",
       "roles": [
         "Spia",
         "Capitano",
-        "Marinaio",
-        "Cambusiere",
+        "Poliziotto",
+        "Avvocato",
+        "Criminologo",
+        "Archivista",
+        "Tecnico della Scientifica",
+        "Giornalista"
+      ]
+    },
+    {
+      "name": "Ristorante",
+      "roles": [
+        "Spia",
+        "Musicista",
+        "Cameriere",
+        "Capo Chef",
+        "Apprendista Chef",
+        "Cassiere",
+        "Caposala",
+        "Cliente",
+        "Venditore di rose"
+      ]
+    },
+    {
+      "name": "Scuola",
+      "roles": [
+        "Spia",
+        "Insegnante di ginnastica",
+        "Insegnante di matematica",
+        "Insegnante di inglese",
+        "Studente",
+        "Bidello",
+        "Preside",
+        "Custode",
+        "Tecnico di laboratorio"
+      ]
+    },
+    {
+      "name": "Stazione di servizio",
+      "roles": [
+        "Spia",
+        "Manager",
+        "Gommista",
+        "Meccanico",
+        "Addetto all'autolavaggio",
+        "Motociclista",
+        "Proprietario d'auto",
+        "Benzinaio"
+      ]
+    },
+    {
+      "name": "Stazione spaziale",
+      "roles": [
+        "Spia",
+        "Ingegnere",
+        "Alieno",
+        "Pilota",
+        "Medico",
+        "Meccanico",
+        "Scienziato",
+        "Astronauta",
+        "Adetto alle telecomunicazioni",
+        "Turista spaziale"
+      ]
+    },
+    {
+      "name": "Sottomarino",
+      "roles": [
+        "Spia",
+        "Comandante",
+        "Silurista",
         "Sonarista",
-        "Meccanico"
+        "Medico",
+        "Meccanico",
+        "Addetto alle telecomunicazioni",
+        "Cuoco",
+        "Marinaio semplice"
+      ]
+    },
+    {
+      "name": "Supermercato",
+      "roles": [
+        "Spia",
+        "Cassiere",
+        "Macellaio",
+        "Custode",
+        "Commesso",
+        "Ufficio reclami",
+        "Magazziniere",
+        "Cliente",
+        "Guardia di sicurezza"
+      ]
+    },
+    {
+      "name": "Teatro",
+      "roles": [
+        "Spia",
+        "Addetto al guardaroba",
+        "Spettatore",
+        "Attore",
+        "Suggeritore",
+        "Tecnico",
+        "Regista",
+        "Cassiere"
+      ]
+    },
+    {
+      "name": "Università",
+      "roles": [
+        "Spia",
+        "Studente diplomato",
+        "Matricola",
+        "Professore",
+        "Custode",
+        "Tecnico",
+        "Bidello",
+        "Capitano della squadra di football",
+        "Psicologo"
+      ]
+    },
+    {
+      "name": "Squadra Alleata della seconda Guerra Mondiale",
+      "roles": [
+        "Spia",
+        "Partigiano",
+        "Addetto alle telecomunicazioni",
+        "Medico",
+        "Cecchino americano",
+        "Prigioniero nazista",
+        "Pilota abbattuto",
+        "Soldato",
+        "Cuoco"
       ]
     },
     {
@@ -16,11 +387,31 @@
       "roles": [
         "Spia",
         "Chirurgo",
-        "Vistatore",
-        "Malato",
+        "Visitatore",
+        "Paziente malato",
         "Morto",
-        "Specializzando"
+        "Specializzando",
+        "Infermiera",
+        "Anestesista",
+        "Malato terminale",
+        "Parente di un paziente"
       ]
     }    
-  ]
+  ],
+  "text": {
+    "share-link": "Per invitare altri giocatori condividi questo link:",
+    "share-whatsapp": "<a href=''>Clicca qui</a> per condividerlo via Whatsapp.",
+    "player-data-header": "Dati personaggio",
+    "toggle-player-data": "Mostra/nascondi",
+    "player-list-header": "Giocatori",
+    "location-list-header": "Luoghi",
+    "btn-start": "Inizia partita",
+    "bnt-stop": "Termina partita",
+    "name": "Nome",
+    "role": "Ruolo",
+    "location": "Luogo",
+    "unknown": "Sconosciuto",
+    "not-playing": "La partita non è ancora iniziata",
+    "first": "primo"
+  }
 }

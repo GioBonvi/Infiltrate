@@ -1,0 +1,417 @@
+{
+  "locations": [
+    {
+      "name": "Airplane",
+      "roles": [
+        "Spy",
+        "First class passenger",
+        "Economic class passenger",
+        "Hostess",
+        "Pilot",
+        "Mechanic",
+        "Second pilot",
+        "Security",
+        "Hijacker"
+      ]
+    },
+    {
+      "name": "Bank",
+      "roles": [
+        "Spy",
+        "Clerk",
+        "Robber",
+        "Director",
+        "Cleaner",
+        "Hostage of a robbery",
+        "Security guard",
+        "Customer",
+        "Armored truck driver"
+      ]
+    },
+    {
+      "name": "Beach",
+      "roles": [
+        "Spy",
+        "Surfer",
+        "Swimmer",
+        "Child",
+        "Ice cream seller",
+        "Beach coconut",
+        "Waiter of a bar on the beach",
+        "Lifeguard",
+        "Tourist"
+      ]
+    },
+    {
+      "name": "Chatedral",
+      "roles": [
+        "Spy",
+        "Priest",
+        "Bishop",
+        "Pope",
+        "Beggar",
+        "Sinner",
+        "Chorist",
+        "Tourist",
+        "Bride/groom",
+        "Bell ringer"
+      ]
+    },
+    {
+      "name": "Circus",
+      "roles": [
+        "Spy",
+        "Acrobat",
+        "Director",
+        "Dancer",
+        "Animal trainer",
+        "Fire-eater",
+        "Clown",
+        "Visitor",
+        "Ticket agent",
+        "Magician"
+      ]
+    },
+    {
+      "name": "Corporate party",
+      "roles": [
+        "Spy",
+        "Entertainer",
+        "Unwanted guest",
+        "Manager",
+        "Clerk",
+        "Manager secretary",
+        "Delivery boy",
+        "Wife/bride of an employee",
+        "Manager of the rival company"
+      ]
+    },
+    {
+      "name": "Crusader army",
+      "roles": [
+        "Spy",
+        "Monk",
+        "Emperor",
+        "Bowman",
+        "Servant",
+        "Imprisoned saracen",
+        "Knight",
+        "Saracen spy",
+        "Traitor",
+        "Squire"
+      ]
+    },
+    {
+      "name": "Casino",
+      "roles": [
+        "Barman",
+        "Head of security",
+        "Hustler",
+        "Bouncer",
+        "Owner",
+        "Lucky player",
+        "Unlucky player",
+        "Rich player",
+        "Croupier"
+      ]
+    },
+    {
+      "name": "Wellness center",
+      "roles": [
+        "Spy",
+        "Customer",
+        "Masseuse",
+        "Dermatologist",
+        "Eeautician",
+        "Owner",
+        "Manicurist"
+      ]
+    },
+    {
+      "name": "Embassy",
+      "roles": [
+        "Spy",
+        "Armed guard",
+        "Ambassador",
+        "Ambassador's secretary",
+        "Refugee",
+        "Secret agent",
+        "Head of State",
+        "Soldier"
+      ]
+    },
+    {
+      "name": "Hotel",
+      "roles": [
+        "Spy",
+        "Janitor",
+        "Security guard",
+        "Manager",
+        "Chef",
+        "Barman",
+        "Customer",
+        "Room service staff",
+        "Cleaner",
+        "Celebrity"
+      ]
+    },
+    {
+      "name": "Military base",
+      "roles": [
+        "Spy",
+        "Private",
+        "Recruit",
+        "General",
+        "Medic",
+        "Sniper",
+        "Rambo",
+        "Soldier guarding",
+        "Tanker",
+        "General's driver"
+      ]
+    },
+    {
+      "name": "Movie studio",
+      "roles": [
+        "Spy",
+        "Stuntman",
+        "Sound technician",
+        "Directore",
+        "Cameraman",
+        "Costume artist",
+        "Actor",
+        "Body double",
+        "Background actor",
+        "Lights technician"
+      ]
+    },
+    {
+      "name": "Ocean liner",
+      "roles": [
+        "Spy",
+        "Cook",
+        "Passenger",
+        "Barman",
+        "Waiter",
+        "Captain",
+        "Mechanic",
+        "Clandestine",
+        "Musician",
+        "Rich passenger"
+      ]
+    },
+    {
+      "name": "Passenger train",
+      "roles": [
+        "Spy",
+        "First class passenger",
+        "Economic class passenger",
+        "Mechanic",
+        "Train conductor",
+        "Ticket inspector",
+        "Clandestine",
+        "Passenger",
+        "Cook"
+      ]
+    },
+    {
+      "name": "Pirate ship",
+      "roles": [
+        "Spy",
+        "Cook",
+        "Slave",
+        "Cannoneer",
+        "Prisoner",
+        "Captain",
+        "Sailor",
+        "Cabin boy",
+        "Lookout"
+      ]
+    },
+    {
+      "name": "Polar station",
+      "roles": [
+        "Spy",
+        "Medic",
+        "Geologist",
+        "Climatologist",
+        "Idrologist",
+        "Pilot",
+        "Radio operator",
+        "Expedition leader",
+        "Biologist",
+        "Researcher",
+        "Food supply attendant"
+      ]
+    },
+    {
+      "name": "Police station",
+      "roles": [
+        "Spy",
+        "Captain",
+        "Policeman",
+        "Lawyer",
+        "Criminologist",
+        "Archivist",
+        "Forensic technician",
+        "Journalist"
+      ]
+    },
+    {
+      "name": "Restaurant",
+      "roles": [
+        "Spy",
+        "Musician",
+        "Waiter",
+        "Head Chef",
+        "Apprentice Chef",
+        "Cashier",
+        "Staf supervisor",
+        "Customer",
+        "Rose seller"
+      ]
+    },
+    {
+      "name": "School",
+      "roles": [
+        "Spy",
+        "PE teacher",
+        "Math teacher",
+        "English teacher",
+        "Student",
+        "Janitor",
+        "Principal",
+        "Custodian",
+        "Laboratory technician"
+      ]
+    },
+    {
+      "name": "Service station",
+      "roles": [
+        "Spy",
+        "Manager",
+        "Tire specialist",
+        "Mechanic",
+        "Car wash attendant",
+        "Biker",
+        "Car owner",
+        "Gas station attendant"
+      ]
+    },
+    {
+      "name": "Space station",
+      "roles": [
+        "Spy",
+        "Engineer",
+        "Alien",
+        "Pilot",
+        "Medic",
+        "Mechanic",
+        "Scientist",
+        "Astronaut",
+        "Telecomunication attendant",
+        "Space tourist"
+      ]
+    },
+    {
+      "name": "Submarine",
+      "roles": [
+        "Spy",
+        "Commander",
+        "Torpedo attendant",
+        "Sonarist",
+        "Medic",
+        "Mechanic",
+        "Telecomunication attendant",
+        "Cook",
+        "Seaman"
+      ]
+    },
+    {
+      "name": "Supermarket",
+      "roles": [
+        "Spy",
+        "Cashier",
+        "Butcher",
+        "Janitor",
+        "Salesperson",
+        "Complint office",
+        "Shelf stocker",
+        "Customer",
+        "Security guard"
+      ]
+    },
+    {
+      "name": "Theater",
+      "roles": [
+        "Spy",
+        "Coat check lady",
+        "Audience member",
+        "Actor",
+        "Prompter",
+        "Technician",
+        "Director",
+        "Cashier"
+      ]
+    },
+    {
+      "name": "University",
+      "roles": [
+        "Spy",
+        "Graduated student",
+        "Freshman",
+        "Professor",
+        "Custodian",
+        "Technician",
+        "Janitor",
+        "Football team captain",
+        "Psychologist"
+      ]
+    },
+    {
+      "name": "Ally World War II squad",
+      "roles": [
+        "Spy",
+        "Resistance fighter",
+        "Telecomunication attendant",
+        "Medic",
+        "American sniper",
+        "Nazi prisoner",
+        "Downed pilot",
+        "Soldier",
+        "Cook"
+      ]
+    },
+    {
+      "name": "Hospital",
+      "roles": [
+        "Spy",
+        "Surgeon",
+        "Visitor",
+        "Sick patient",
+        "Dead",
+        "Intern",
+        "Nurse",
+        "Anesthesiologist",
+        "Terminally ill patient",
+        "Patient's relative"
+      ]
+    }    
+  ],
+  "text": {
+    "share-link": "Share this link to invite other players:",
+    "share-whatsapp": "<a href=''>Click here</a> to share it by Whatsapp.",
+    "player-data-header": "Player data",
+    "toggle-player-data": "Hide/show",
+    "player-list-header": "Players",
+    "location-list-header": "Locations",
+    "btn-start": "Start game",
+    "bnt-stop": "End game",
+    "name": "Name",
+    "role": "Role",
+    "location": "Location",
+    "unknown": "Unknown",
+    "not-playing": "The match has not started yet...",
+    "first": "first"
+  }
+}

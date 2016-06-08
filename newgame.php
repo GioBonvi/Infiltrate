@@ -22,14 +22,14 @@ else
     exit;
 }
 
-// Check host's language.
-if (in_array($_POST['language'], $okLangs))
+// Check users's language.
+if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("/lang/" . $_GET['language'] . ".json"))
 {
-    $language = $_POST['language'];
+    $language = $_GET['language'];
 }
 else
 {
-    $language = $okLangs[0];
+    $language = "EN";
 }
 
 // Generate the keyCode for the match (6 alphanumeric random characters).
@@ -60,7 +60,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     if ($stmt->execute())
     {
         echo "Host's data insertion completed successfully<br>";
-        header("Location: play.php?key=$keyCode&name=$name");
+        header("Location: play.php?key=$keyCode&name=$name&language=$language");
         exit;
     }
     else

@@ -22,13 +22,13 @@ else
 }
 
 // Check users's language.
-if (isset($_GET['language']) && in_array($_GET['language'], $okLangs))
+if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("/lang/" . $_GET['language'] . ".json"))
 {
     $language = $_GET['language'];
 }
 else
 {
-    $language = $okLangs[0];
+    $language = "EN";
 }
 
 // Check key is valid.
@@ -122,7 +122,6 @@ else
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Spyfall</title>
@@ -134,32 +133,44 @@ else
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <body>
+<script>
 
+// Setup language.
+$.ajax({
+    url:"lang/<?php echo $language;?>.json",
+    async: false
+})
+.done(function(data){
+    // Save localized strings in resource.
+    resource = data;
+});
+</script>
 <h1>Spyfall</h1>
 <script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*(name|language)=[a-zA-Z0-9]*&*/g, "");</script>
-<p>Per invitare altri giocatori condividi questo link:<br>
-<script>document.write(shareLink);</script></p>
-<p><a id="whatsapp-share" href="">Clicca qui</a> per condividerlo via Whatsapp.</p>
-<script>$("#whatsapp-share").attr("href", "whatsapp://send?text=" + shareLink);</script>
-
-<p id="timer"></p>
-
-<h2>Dati personaggio</h2>
-<div id="toggle-player-data">Mostra/nascondi</div>
-<div id="player-data">
-</div>
-
-<h2>Giocatori</h2>
-<ul id="players-list">
-</ul>
-
-<h2>Location</h2>
-<ul id="location-list">
-</ul>
+<p id="share-link">Per invitare altri giocatori condividi questo link:</p>
+<p><script>document.write(shareLink);</script></p>
+<p id="share-whatsapp"><a href="">Clicca qui</a> per condividerlo via Whatsapp.</p>
+<script>$("#share-whatsapp a").attr("href", "whatsapp://send?text=" + shareLink);</script>
 
 <button id="btn-start">Inizio partita</button>
 
 <button id="btn-stop" hidden>Termina partita</button>
+
+<p id="timer"></p>
+
+
+<h2 id="player-data-header">Datia personaggio</h2>
+<div id="toggle-player-data">Mostra/nascondi</div>
+<div id="player-data">
+</div>
+
+<h2 id="player-list-header">Giocatori</h2>
+<ul id="players-list">
+</ul>
+
+<h2 id="location-list-header">Location</h2>
+<ul id="location-list">
+</ul>
 
 <br><br>
 
@@ -177,30 +188,25 @@ else
 </div>
 
 <script>
-// This will contain all the strings translated into the chosen language.
-resource = {};
-// Setup language.
-$.get("lang/<?php echo $language;?>.json")
-.done(function(data){
-    resource = data;    
-    // Print out the list  of the locations.
-    resource['locations'].forEach(function(location, index) {
-        $("#location-list").append('<li data="on">' + location['name'] + '</li>');
-    });
-    $("#location-list li").click(function() {
-        if ($(this).attr("data") == "on")
-        {
-            $(this).attr("data", "off")
-        }
-        else
-        {
-            $(this).attr("data", "on")
-        }
-    });
+// Localize the page using the saved strings.
+localize();
+// Print out the list  of the locations.
+resource['locations'].forEach(function(location, index) {
+    $("#location-list").append('<li data="on">' + location['name'] + '</li>');
 });
+$("#location-list li").click(function() {
+    if ($(this).attr("data") == "on")
+    {
+        $(this).attr("data", "off")
+    }
+    else
+    {
+        $(this).attr("data", "on")
+    }
+});
+
 // This will contain the unix timestamp of the end of the match.
 endTime = 0;
-
 
 // Update the page every 10 seconds and the clock every half second.
 getUpdate();
@@ -229,6 +235,7 @@ $("#toggle-player-data").click(function() {
     $("#player-data").toggle("medium");
 });
 
+// Update the clock.
 function setTimer()
 {
     if (endTime == 0)
@@ -248,27 +255,27 @@ function setTimer()
     }
 }
 
+// Get an update from the server.
 function getUpdate()
 {
     $.get("getUpdate.php", {key: "<?php echo $keyCode;?>"})
     .done(function(data) {
-        console.log(data);
         if (data['error'])
         {
             console.log(data['message']);
             return;
         }
         
-        // Set status.
         if (data['match']['Playing'])
         {
+            // Show the collected data (game is on).
             endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
             $("#toggle-player-data").show();
             $("#player-data").empty();
             $("#player-data").show();
-            var name = "<p>Nome: " + data['player']['Name'] + "</p>";
-            var role = "<p>Ruolo: " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
-            var location = "<p>Luogo: " + (data['player']['Role'] != 0 ? getLocation(data['match']['Location']) : "Sconosciuto") + "</p>";
+            var name = "<p>" + getResource("name") + ": " + data['player']['Name'] + "</p>";
+            var role = "<p>" + getResource("role") + ": " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
+            var location = "<p>" + getResource("location") + ": " + (data['player']['Role'] != 0 ? getLocation(data['match']['Location']) : getResource("unknown")) + "</p>";
             $("#player-data").html(name + role + location);
             if (data['player']['Host'])
             {
@@ -283,11 +290,12 @@ function getUpdate()
         }
         else
         {
+            // Show the collected data (game is off).
             endTime = 0;
             $("#toggle-player-data").hide();
             $("#player-data").empty();
             $("#player-data").show();
-            $("#player-data").html("Non stai ancora giocando...");
+            $("#player-data").html(getResource("not-playing"));
             if (data['player']['Host'])
             {
                 $("#btn-start").show();
@@ -302,27 +310,27 @@ function getUpdate()
         
         // Update player list.
         var oldplayersOff = [];
-        // Compare with the old list of players.
+        // Maintain a list of "off" players.
         $("#players-list li").each(function() {
             if ($(this).attr("data") == "off")
             {
                 oldplayersOff.push($(this).text());
             }
         });
-        
         $("#players-list").empty();
-        
+        // Reapply "off" status to the player in the list.
         data['players'].forEach(function(player, index) {
             var name = player['Name'];
             if (oldplayersOff.indexOf(name) >= 0)
             {
-                $("#players-list").append('<li data="off">' + name + (player['First'] == 1 ? ' (primo)' : '') +'</li>');
+                $("#players-list").append('<li data="off">' + name + (player['First'] == 1 ? ' (' + getResource("first") + ')' : '') +'</li>');
             }
             else
             {
-                $("#players-list").append('<li data="on">' + name + (player['First'] == 1 ? ' (primo)' : '') + '</li>');
+                $("#players-list").append('<li data="on">' + name + (player['First'] == 1 ? ' (' + getResource("first") + ')' : '') + '</li>');
             }
         });
+        // When a player name is clicked it's set to strikethrough.
         $("#players-list li").click(function() {
             if ($(this).attr("data") == "on")
             {
@@ -344,6 +352,32 @@ function getLocation(index)
 function getRole(location, index)
 {
     return resource["locations"][location]['roles'][index];
+}
+
+function localize()
+{
+    console.log(resource);
+    $("#share-link").html(getResource("share-link"));
+    $("#share-whatsapp").html(getResource("share-whatsapp"));
+    $("#player-data-header").html(getResource("player-data-header"));
+    $("#toggle-player-data").html(getResource("toggle-player-data"));
+    $("#player-list-header").html(getResource("player-list-header"));
+    $("#location-list-header").html(getResource("location-list-header"));
+    $("#btn-start").html(getResource("btn-start"));
+    $("#btn-stop").html(getResource("btn-stop"));
+}
+
+function getResource(res)
+{
+    // Wait until the resources are available, then return.
+    if (typeof resource !== "undefined")
+    {
+        return resource.text[res];
+    }
+    else
+    {
+        setTimeout(getResource(res), 250);
+    }
 }
 </script>
 
