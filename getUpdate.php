@@ -58,8 +58,9 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     {
         $players[] = $r;
     }
-    $stmt = $db->prepare("SELECT * FROM Match LIMIT 1");
+    $stmt = $db->prepare("SELECT Location,Playing,EndTime FROM Match LIMIT 1");
     $match = $stmt->execute()->fetchArray();
+    $match['TimeLeft'] = $match['EndTime'] - time();
     $output['error'] = false;
     $output['player'] = $player;
     $output['players'] = $players;

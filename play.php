@@ -57,11 +57,12 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     $stmt = $db->prepare("SELECT Playing FROM Match WHERE Playing=1");
     $res = $stmt->execute();
     $res = $res->fetchArray();
-    if ($res)
+    //TODO: remove after debugging.
+    /*if ($res)
     {
         header("Location: index.php?error=match-active");
         exit;
-    }
+    }*/
     
 
     // Check if this player is already registered in this match (using session_id).
@@ -190,7 +191,6 @@ function setTimer()
     }
     else
     {
-        console.log(1);
         var diff = endTime - Math.floor(Date.now() / 1000)
         var m = Math.floor(diff / 60);
         var s = diff % 60;
@@ -212,7 +212,7 @@ function getUpdate()
         // Set status
         if (data['match']['Playing'])
         {
-            endTime = data['match']['EndTime'];
+            endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
             $("#player-data").empty();
             var role = "<p>Ruolo: " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
             var location = (data['player']['Role'] != 0 ? "<p>Luogo: " + getLocation(data['match']['Location']) + "</p>" : "");
@@ -268,11 +268,6 @@ function getUpdate()
                 $("#players-list").append('<li data="on">' + name + '</li>');
             }
         });
-        
-        if (data['player']['Host'])
-        {
-            
-        }
     })
 }
 

@@ -56,30 +56,13 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     {
         // Start the match.
         
-        if (! isset($_GET['timestamp']))
-        {
-            $output['error'] = true;
-            $output['status'] = "bad-params";
-            echo json_encode($output);
-            exit;
-        }
-        
-        // Check if timestamp is valid.
-        if (! ctype_digit($_GET['timestamp']))
-        {
-            $output['error'] = true;
-            $output['status'] = "bad-timestamp";
-            echo json_encode($output);
-            exit;
-        }
-        
         // Update the match status.
         
         // TODO: Regulate match duration counting players.
         // Set new match to playing and choose the location.
         $stmt = $db->prepare("INSERT INTO Match (Location,Playing,EndTime) VALUES (:loc,1,:endTime)");
         $stmt->bindValue(":loc", rand(0, $numberOfLocations - 1));
-        $stmt->bindValue(":endTime", $_GET['timestamp'] + 10*60);
+        $stmt->bindValue(":endTime", time() + 10*60);
         $stmt->execute();
         
         // TODO: Assign random roles using file with roles.
