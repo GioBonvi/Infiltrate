@@ -56,8 +56,8 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         
         // Check that no other match is active.
         $stmt = $db->prepare("SELECT Playing FROM Match LIMIT 1");
-        $res = $stmt->execute();
-        if ($res->fetchArray()['Playing'] == 1)
+        $res = $stmt->execute()->fetchArray();
+        if ($res['Playing'] == 1)
         {
             $output['error'] = true;
             $output['status'] = "already-playing";

@@ -48,8 +48,8 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE (Name=:name AND SessID<>:sessID)");
         $stmt->bindValue(":name", $name);
         $stmt->bindValue(":sessID", session_id());
-        $res = $stmt->execute();
-        if ($res->fetchArray()["Count(*)"] != 0)
+        $res = $stmt->execute()->fetchArray();
+        if ($res['Count(*)'] != 0)
         {
             header("Location: index.php?error=bad-name");
             exit;
