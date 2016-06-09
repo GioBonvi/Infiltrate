@@ -4,6 +4,12 @@ body {
     font-size: 1.5em;
 }
 
+#accept-cookie {
+    font-size: 0.7em;
+    background-color: #f8f1ba;
+    padding: 0.5em;
+}
+
 h1 {
     font-style: italic;
     font-size: 2.5em;

@@ -140,10 +140,10 @@ else
     <link rel='stylesheet' type='text/css' href="main.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="cookies.js"></script>
 </head>
 <body>
 <script>
-
 // Setup language.
 $.ajax({
     url:"lang/<?php echo $language;?>.json",
