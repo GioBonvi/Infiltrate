@@ -183,26 +183,15 @@ $.ajax({
 
 <br><br>
 
-<div style="text-align: center">
-    <p>Skyfall</p>
-    <audio style="width:90%" src="media/Skyfall.mp3" controls></audio>
-</div>
-<div style="text-align: center">
-    <p>Skyfall (instrumental)</p>
-    <audio style="width:90%" src="media/Skyfall (instrumental).mp3" controls></audio>
-</div>
-<div style="text-align: center">
-    <p>James Bond theme</p>
-    <audio style="width:90%" src="media/James Bond theme.mp3" controls></audio>
-</div>
-
+<button id="show-music">Show the music</button>
 <script>
-// Localize the page using the saved strings.
+// Localize the page using the saved strings in "lang" folder.
 localize();
-// Print out the list  of the locations.
+// Print out the list  of the locations (localized).
 resource['locations'].forEach(function(location, index) {
     $("#location-list").append('<li data="on">' + location['name'] + '</li>');
 });
+// Clicking on a location strikes it out.
 $("#location-list li").click(function() {
     if ($(this).attr("data") == "on")
     {
@@ -214,7 +203,7 @@ $("#location-list li").click(function() {
     }
 });
 
-// This will contain the unix timestamp of the end of the match.
+// This will contain the unix timestamp of the end of the match (for the clock).
 endTime = 0;
 
 // Update the page every 10 seconds and the clock every half second.
@@ -222,6 +211,7 @@ getUpdate();
 setInterval(getUpdate, 10000);
 setInterval(setTimer, 500);
 
+// Start a new match.
 $("#btn-start").click(function()
 {
     $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "play"})
@@ -232,6 +222,7 @@ $("#btn-start").click(function()
     });
 });
 
+// End the current match.
 $("#btn-stop").click(function()
 {
     $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "stop"})
@@ -242,10 +233,12 @@ $("#btn-stop").click(function()
     });
 });
 
+// Hide sensitive data (role and location).
 $("#toggle-player-data").click(function() {
     $("#player-data").toggle("medium");
 });
 
+// Pause/resume the timer by clicking on it (host only).
 $("#timer").click(function() {
     if ($(this).attr("data") != "paused")
     {
@@ -266,9 +259,14 @@ $("#timer").click(function() {
             getUpdate();
         });
         $(this).attr("data", "playing");
-    }    
-    
+    }
+});
 
+// The music is added to the page only when the user requests it.
+// By doing this the user does not have to download 10 MB of data each time he opens this page.
+$("#show-music").click(function() {
+    $(this).after('<div id="music">\n<div style="text-align: center">\n<p>Skyfall</p>\n<audio style="width:90%" src="media/Skyfall.mp3" controls></audio>\n</div>\n<div style="text-align: center">\n<p>Skyfall (instrumental)</p>\n<audio style="width:90%" src="media/Skyfall (instrumental).mp3" controls></audio>\n</div>\n<div style="text-align: center">\n<p>James Bond theme</p>\n<audio style="width:90%" src="media/James Bond theme.mp3" controls></audio>\n</div>\n</div>');
+    $(this).remove();
 });
 
 // Update the clock.
@@ -397,16 +395,19 @@ function getUpdate()
     })
 }
 
+// Get a location from the localized lilst of locations.
 function getLocation(index)
 {
     return resource["locations"][index]["name"];
 }
 
+// Given a location get a role from the localized lilst of roles for that location.
 function getRole(location, index)
 {
     return resource["locations"][location]['roles'][index];
 }
 
+// Localize the page by inserting the localized strings.
 function localize()
 {
     console.log(resource);
@@ -418,19 +419,13 @@ function localize()
     $("#location-list-header").html(getResource("location-list-header"));
     $("#btn-start").html(getResource("btn-start"));
     $("#btn-stop").html(getResource("btn-stop"));
+    $("#show-music").html(getResource("show-music"));
 }
 
+// Get a localized resource out of the list.
 function getResource(res)
 {
-    // Wait until the resources are available, then return.
-    if (typeof resource !== "undefined")
-    {
-        return resource.text[res];
-    }
-    else
-    {
-        setTimeout(getResource(res), 250);
-    }
+    return resource.text[res];
 }
 </script>
 

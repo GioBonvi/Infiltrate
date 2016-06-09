@@ -412,6 +412,7 @@
     "location": "Luogo",
     "unknown": "Sconosciuto",
     "not-playing": "La partita non è ancora iniziata",
-    "first": "primo"
+    "first": "primo",
+    "show-music": "Mostra la musica"
   }
 }

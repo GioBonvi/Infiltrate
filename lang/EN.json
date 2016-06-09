@@ -412,6 +412,7 @@
     "location": "Location",
     "unknown": "Unknown",
     "not-playing": "The match has not started yet...",
-    "first": "first"
+    "first": "first",
+    "show-music": "Show the music"
   }
 }
