@@ -21,6 +21,17 @@ h2 {
     font-size: 1.5em;
 }
 
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.container>div {
+    text-align: center;
+    margin: 0 4em 2em 4em;
+}
+
 input, select, button {
     background-color: #fcf9e2;
     font-size: 1em;
@@ -62,4 +73,9 @@ input[type="text"]:focus, select:focus, input[type="submit"]:focus, button:focus
 
 #players-list li[data="off"], #location-list li[data="off"] {
     text-decoration: line-through;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.6em;
 }

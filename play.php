@@ -5,20 +5,16 @@ session_start(['cookie_lifetime' => 86400]);
 // Exit if no name or key
 if (! (isset($_GET['name']) && isset($_GET['key'])))
 {
-    header("Location: index.php");
+    header("Location: index.php?bad-params");
 }
 
 // Check users's language.
-if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("lang/" . $_GET['language'] . ".json"))
+if (! isset($_COOKIE['language']) || ! file_exists("lang/" . $_COOKIE['language'] . ".json"))
 {
-    $language = $_GET['language'];
-}
-else
-{
-    $language = "EN";
+    $_COOKIE['language'] = "EN";
 }
 
-// Check key is valid.
+// Check if key is valid.
 if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
     $keyCode = $_GET['key'];
@@ -84,9 +80,8 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     {
         // Already registered in this match.
         // Update the values.
-        $stmt = $db->prepare("UPDATE players SET Name=:name,Lang=:lang WHERE SessID=:sessID");
+        $stmt = $db->prepare("UPDATE players SET Name=:name WHERE SessID=:sessID");
         $stmt->bindValue(":name", $name);
-        $stmt->bindValue(":lang", $language);
         $stmt->bindValue(":sessID", session_id());
         if (! $stmt->execute())
         {
@@ -99,11 +94,10 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         // New player in this match.
         
         // Register him.
-        $stmt = $db->prepare("INSERT INTO players (SessID,Name,First,Host,Role,Lang) VALUES (:sessID,:name,0,0,:role,:lang)");
+        $stmt = $db->prepare("INSERT INTO players (SessID,Name,First,Host,Role) VALUES (:sessID,:name,0,0,:role)");
         $stmt->bindValue(":sessID", session_id());
         $stmt->bindValue(":name", $name);
         $stmt->bindValue(":role", -1);
-        $stmt->bindValue(":lang", $language);
         if (! $stmt->execute())
         {
             header("Location: index.php?error=database-register-player");
@@ -146,7 +140,7 @@ else
 <script>
 // Setup language.
 $.ajax({
-    url:"lang/<?php echo $language;?>.json",
+    url:"lang/<?php echo $_COOKIE['language'];?>.json",
     async: false
 })
 .done(function(data){
@@ -155,11 +149,14 @@ $.ajax({
 });
 </script>
 <h1>Spyfall</h1>
-<script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*(name|language)=[a-zA-Z0-9]*&*/g, "");</script>
+<script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*name=[a-zA-Z0-9]*&*/g, "");</script>
 <p id="share-link">Per invitare altri giocatori condividi questo link:</p>
 <p><script>document.write(shareLink);</script></p>
 <p id="share-whatsapp"><a href="">Clicca qui</a> per condividerlo via Whatsapp.</p>
 <script>$("#share-whatsapp a").attr("href", "whatsapp://send?text=" + shareLink);</script>
+
+
+<?php include_once("language-select.php"); ?>&nbsp;
 
 <button id="btn-start">Inizio partita</button>
 
@@ -184,6 +181,12 @@ $.ajax({
 <br><br>
 
 <button id="show-music">Show the music</button>
+
+<footer id="footer">
+<p>This project's source code is available on <a href="https://github.com/GioBonvi/Spyfall">GitHub</a></p>
+<p><a href="http://international.hobbyworld.ru/catalog/25-spyfall/">Spyfall</a> is designed by Alexandr Ushan, published by <a href="http://international.hobbyworld.ru/">Hobby World</a></p>
+</footer>
+
 <script>
 // Localize the page using the saved strings in "lang" folder.
 localize();
@@ -413,6 +416,7 @@ function localize()
     console.log(resource);
     $("#share-link").html(getResource("share-link"));
     $("#share-whatsapp").html(getResource("share-whatsapp"));
+    $('label[for="language"').html(getResource("language") + "&nbsp");
     $("#player-data-header").html(getResource("player-data-header"));
     $("#toggle-player-data").html(getResource("toggle-player-data"));
     $("#player-list-header").html(getResource("player-list-header"));
@@ -420,6 +424,7 @@ function localize()
     $("#btn-start").html(getResource("btn-start"));
     $("#btn-stop").html(getResource("btn-stop"));
     $("#show-music").html(getResource("show-music"));
+    $("#footer").html(getResource("footer"));
 }
 
 // Get a localized resource out of the list.

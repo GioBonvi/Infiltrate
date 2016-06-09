@@ -85,6 +85,8 @@ With my version I changed some behaviours and part of the structure of the game,
  - a banner aletring about cookie use
 
  - music can be activated only if wanted (save Internet data)
+ 
+ - language can be changed more easily and during the game as well
 
 ## What's up next?
 
