@@ -52,7 +52,18 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 
     if ($_GET['action'] == "play")
     {
-        // Start the match.
+        // Start a match if there is not another match going on.
+        
+        // Check that no other match is active.
+        $stmt = $db->prepare("SELECT Playing FROM Match LIMIT 1");
+        $res = $stmt->execute();
+        if ($res->fetchArray()['Playing'] == 1)
+        {
+            $output['error'] = true;
+            $output['status'] = "already-playing";
+            echo json_encode($output);
+            exit;
+        }
         
         // Choose a random location.
         // Use EN.json, but it would be the same with every other file.
@@ -71,7 +82,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         // Duration = number of players + 5 if more than 5 players.
         $duration = ($playersN <= 5 ? 10 : $playerN + 5) * 60;
         
-        $stmt = $db->prepare("INSERT INTO Match (Location,Playing,EndTime) VALUES (:loc,1,:endTime)");
+        $stmt = $db->prepare("INSERT INTO Match (Location,Playing,EndTime,Paused) VALUES (:loc,1,:endTime,0)");
         $stmt->bindValue(":loc", $locationIndex);
         $stmt->bindValue(":endTime", time() + $duration);
         $stmt->execute();
@@ -116,6 +127,73 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         
         $output['error'] = false;
         $output['message'] = "game-stopped";
+        echo json_encode($output);
+        exit;
+    }
+    else if ($_GET['action'] == "pause")
+    {
+        // Pause or resume the clock.
+        
+        // Check that a match is going on and is not already paused.
+        $stmt = $db->prepare("SELECT Playing,Paused,EndTime FROM Match LIMIT 1");
+        $res = $stmt->execute();
+        $match = $res->fetchArray();
+        if ($match['Playing'] != 1 || $match['Paused'] != 0)
+        {
+            $output['error'] = true;
+            $output['status'] = "error";
+            echo json_encode($output);
+            exit;
+        }
+        
+        $endTime = $match['EndTime'];
+        $timeRemaining = $endTime - time();
+        // Check if game is already over or not.
+        if($timeRemaining > 0)
+        {
+            $stmt = $db->prepare("UPDATE Match SET Paused=:remaining WHERE EndTime=:endTime");
+            $stmt->bindValue(":remaining", $timeRemaining);
+            $stmt->bindValue(":endTime", $endTime);
+            $stmt->execute();
+            
+            $output['error'] = false;
+            $output['message'] = "game-paused";
+            echo json_encode($output);
+            exit;
+        }
+        else
+        {
+            $output['error'] = false;
+            $output['message'] = "game-over";
+            echo json_encode($output);
+            exit;
+        }
+    }
+    else if ($_GET['action'] == "resume")
+    {
+        // Resume a paused game.
+        
+        // Check that a match is going on and is paused.
+        $stmt = $db->prepare("SELECT Playing,Paused,EndTime FROM Match LIMIT 1");
+        $res = $stmt->execute();
+        $match = $res->fetchArray();
+        if ($match['Playing'] != 1 || $match['Paused'] == 0)
+        {
+            $output['error'] = true;
+            $output['status'] = "error";
+            echo json_encode($output);
+            exit;
+        }
+        
+        $endTime = time() + $match['Paused'];
+        
+        $stmt = $db->prepare("UPDATE Match SET Paused=0,EndTime=:endTime WHERE EndTime=:oldEndTime");
+        $stmt->bindValue(":endTime", $endTime);
+        $stmt->bindValue(":oldEndTime", $match['EndTime']);
+        $stmt->execute();
+        
+        $output['error'] = false;
+        $output['message'] = "game-resumed";
         echo json_encode($output);
         exit;
     }

@@ -8,17 +8,6 @@ if (! (isset($_GET['name']) && isset($_GET['key'])))
     header("Location: index.php");
 }
 
-// Check user's name.
-if (preg_match("/^[a-zA-Z0-9]+$/", $_GET['name']))
-{
-    $name = $_GET['name'];
-}
-else
-{
-    header("Location: index.php?error=bad-name");
-    exit;
-}
-
 // Check users's language.
 if (isset($_GET['language']) && ctype_alnum($_GET['language']) && file_exists("lang/" . $_GET['language'] . ".json"))
 {
@@ -51,6 +40,28 @@ if(! file_exists($dbPath))
 
 if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 {
+    // Check user's name is not already taken by some other player.
+    if (preg_match("/^[a-zA-Z0-9]+$/", $_GET['name']))
+    {
+        $name = $_GET['name'];
+        
+        $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE (Name=:name AND SessID<>:sessID)");
+        $stmt->bindValue(":name", $name);
+        $stmt->bindValue(":sessID", session_id());
+        $res = $stmt->execute();
+        if ($res->fetchArray()["Count(*)"] != 0)
+        {
+            header("Location: index.php?error=bad-name");
+            exit;
+        }
+    }
+    else
+    {
+        header("Location: index.php?error=bad-name");
+        exit;
+    }
+    
+    
     // Check the match is not going on.
     $stmt = $db->prepare("SELECT Playing FROM Match WHERE Playing=1");
     $res = $stmt->execute();
@@ -213,7 +224,7 @@ setInterval(setTimer, 500);
 
 $("#btn-start").click(function()
 {
-    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "play", timestamp: Math.floor(Date.now() / 1000)})
+    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "play"})
     .done(function(data)
     {
         console.log(data);
@@ -235,12 +246,47 @@ $("#toggle-player-data").click(function() {
     $("#player-data").toggle("medium");
 });
 
+$("#timer").click(function() {
+    if ($(this).attr("data") != "paused")
+    {
+        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "pause"})
+        .done(function(data)
+        {
+            console.log(data);
+            getUpdate();
+        });
+        $(this).attr("data", "paused");
+    }
+    else
+    {
+        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "resume"})
+        .done(function(data)
+        {
+            console.log(data);
+            getUpdate();
+        });
+        $(this).attr("data", "playing");
+    }    
+    
+
+});
+
 // Update the clock.
 function setTimer()
 {
+    /* endTime can be:
+     *  0 -> means the game is not on. The timer is not shown.
+     *  -1 -> the game is paused. Don't update the clock, but leave it as it is.
+     *  < currentDate -> the game is over: display 00:00
+     *  > currentDate -> the game is on: display how much time is left
+     */
     if (endTime == 0)
     {
         $("#timer").empty();
+    }
+    else if (endTime < 0)
+    {
+        //nop
     }
     else if (endTime < Math.floor(Date.now()/1000))
     {
@@ -269,7 +315,14 @@ function getUpdate()
         if (data['match']['Playing'])
         {
             // Show the collected data (game is on).
-            endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
+            if (data['match']['Paused'] == 0)
+            {
+                endTime = Math.floor(Date.now()/1000) + data['match']['TimeLeft'];
+            }
+            else
+            {
+                endTime = -1;
+            }
             $("#toggle-player-data").show();
             $("#player-data").empty();
             $("#player-data").show();

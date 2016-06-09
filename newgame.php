@@ -53,7 +53,7 @@ else
 if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 { 
     $db->exec("CREATE TABLE 'Players' ('SessID' TEXT NOT NULL UNIQUE, 'Name' TEXT NOT NULL UNIQUE, 'Host' INTEGER NOT NULL DEFAULT 0, 'Role' INTEGER NOT NULL, 'First' INTEGER NOT NULL, 'Lang' TEXT NOT NULL);");
-    $db->exec("CREATE TABLE 'Match' ('Location' INTEGER NOT NULL, 'Playing' INTEGER NOT NULL DEFAULT 0, 'EndTime' INTEGER NOT NULL);");
+    $db->exec("CREATE TABLE 'Match' ('Location' INTEGER NOT NULL, 'Playing' INTEGER NOT NULL DEFAULT 0, 'EndTime' INTEGER NOT NULL, 'Paused' INTEGER NOT NULL);");
     echo "Database was created and initialized.<br>";   
     
     // Insert host's data into database.
