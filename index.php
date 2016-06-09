@@ -1,4 +1,9 @@
 <?php
+// Little dirty hack to clean up older databases: this script, which is called
+// everytime anyone fires up this page deletes all the files in "db" folder
+// which have not been modified since 24 hours.
+include_once("cleanup.php");
+
 $keyCode = "";
 // Check if a key was specified.
 if (isset($_GET['key']) && strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
