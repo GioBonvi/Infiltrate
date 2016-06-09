@@ -48,7 +48,7 @@ By the way Spyfall was not invented nor by me nor by evanbrumley:
 
 ## How to contribute
 
-The whole project is completely open source and licensed under the GNU GPL v.3 so feel free to create your own version.
+The whole project is completely open source and licensed under the [GNU GPL v.3 license](https://github.com/GioBonvi/Spyfall/blob/master/LICENSE) so feel free to create your own version.
 
 If you want to contribute to the translations please use EN.json or IT.json as a base model to create new languages. A translation can be accepted only if it 100% complete, otherwise it won't work. The order of the locations and roles must be the same in every file.
 
