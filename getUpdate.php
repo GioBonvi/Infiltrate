@@ -6,7 +6,7 @@ session_start(['cookie_lifetime' => 86400]);
 if (! isset($_GET['key']))
 {
     $output['error'] = true;
-    $output['status'] = "bad-params";
+    $output['status'] = "err-bad-params";
     echo json_encode($output);
     exit;
 }
@@ -19,7 +19,7 @@ if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 else
 {
     $output['error'] = true;
-    $output['status'] = "bad-key";
+    $output['status'] = "err-bad-key";
     echo json_encode($output);
     exit;
 }
@@ -30,7 +30,7 @@ $dbPath = "db/" . $keyCode . ".db";
 if(! file_exists($dbPath))
 {
     $output['error'] = true;
-    $output['status'] = "bad-key";
+    $output['status'] = "err-bad-key";
     echo json_encode($output);
     exit;
 }
@@ -44,7 +44,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     if (! $player)
     {
         $output['error'] = true;
-        $output['status'] = "bad-auth";
+        $output['status'] = "err-bad-auth";
         echo json_encode($output);
         exit;
     }
@@ -69,7 +69,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 else
 {
     $output['error'] = true;
-    $output['status'] = "database-unknown-error";
+    $output['status'] = "err-database-unknown";
     echo json_encode($output);
     exit;
 }

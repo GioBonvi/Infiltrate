@@ -32,6 +32,11 @@ h2 {
     margin: 0 4em 2em 4em;
 }
 
+#error-msg {
+    font-weight: 700;
+    color: red;
+}
+
 input, select, button {
     background-color: #fcf9e2;
     font-size: 1em;

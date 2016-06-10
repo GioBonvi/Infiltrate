@@ -52,6 +52,19 @@ $.ajax({
 </script>
 
 <h1>Spyfall</h1>
+<div class="container" id="error-msg">
+<?php
+if (isset($_GET['error']))
+{
+    $error = $_GET['error'];
+    $resource = json_decode(file_get_contents("lang/{$_COOKIE['language']}.json"), TRUE);
+    if (isset($resource['text'][$error]))
+    {
+        echo "<p>" . $resource['text'][$error] . "</p>";
+    }    
+}
+?>
+</div>
 <div class="container">
     <div>
         <h2 id="new-match-header">New game</h2>

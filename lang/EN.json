@@ -422,6 +422,23 @@
     "unknown": "Unknown",
     "not-playing": "The match has not started yet",
     "first": "first",
-    "show-music": "Show the music"
+    "show-music": "Show the music",
+    "err-bad-params": "Requested parameters have not been sent",
+    "err-bad-name": "The name must consist of alphanumeric characters only (A-Z 0-9)",
+    "err-database-insert-host": "Error inserting host player in the database",
+    "err-database-unknown": "Unknown error connecting to the database",
+    "err-bad-key": "Wrong key",
+    "err-match-active": "The match has already started: you'll be able to join it when it ends",
+    "err-relogin-database-update": "Error with the database in updating player's data",
+    "err-database-register-player": "Error with the database in registering new player's data",
+    "err-database-get-player-infos": "Error with the database in recovering player's data",
+    "err-bad-auth": "You are not authorized",
+    "err-already-playing": "A match is already active: you can not start another one",
+    "err-game-over": "The match is over",
+    "err": "Error",
+    "succ-game-started": "The match has started",
+    "succ-game-stopped": "The match has ended",
+    "succ-game-paused": "Time has been paused",
+    "succ-game-resumed": "Time has been resumed"
   }
 }

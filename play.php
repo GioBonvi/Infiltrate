@@ -5,7 +5,7 @@ session_start(['cookie_lifetime' => 86400]);
 // Exit if no name or key
 if (! (isset($_GET['name']) && isset($_GET['key'])))
 {
-    header("Location: index.php?bad-params");
+    header("Location: index.php?err-bad-params");
 }
 
 // Check users's language.
@@ -21,7 +21,7 @@ if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 }
 else
 {
-    header("Location: index.php?error=bad-key");
+    header("Location: index.php?error=err-bad-key");
     exit;
 }
 
@@ -30,7 +30,7 @@ $dbPath = "db/" . $keyCode . ".db";
 // Check database exists.
 if(! file_exists($dbPath))
 {
-    header("Location: index.php?error=bad-key");
+    header("Location: index.php?error=err-bad-key");
     exit;
 }
 
@@ -47,27 +47,32 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $res = $stmt->execute()->fetchArray();
         if ($res['Count(*)'] != 0)
         {
-            header("Location: index.php?error=bad-name");
+            header("Location: index.php?error=err-bad-name");
             exit;
         }
     }
     else
     {
-        header("Location: index.php?error=bad-name");
+        header("Location: index.php?error=err-bad-name");
         exit;
     }
     
     
-    // Check the match is not going on.
-    $stmt = $db->prepare("SELECT Playing FROM Match WHERE Playing=1");
-    $res = $stmt->execute();
-    $res = $res->fetchArray();
-    //TODO: remove after debugging.
-    /*if ($res)
+    // If the match is going on the player can connect only if he
+    // was already in the match.
+    $stmt = $db->prepare("SELECT Playing FROM Match LIMIT 1");
+    $match = $stmt->execute()->fetchArray();
+    $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE SessID=:sessID");
+    $stmt->bindValue(":sessID", session_id());
+    $player = $stmt->execute()->fetchArray();
+    if ($match['Playing'] == 1)
     {
-        header("Location: index.php?error=match-active");
-        exit;
-    }*/
+        if ($player['Count(*)'] != 1)
+        {
+            header("Location: index.php?error=err-match-active");
+            exit;
+        }
+    }
     
 
     // Check if this player is already registered in this match (using session_id).
@@ -85,7 +90,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->bindValue(":sessID", session_id());
         if (! $stmt->execute())
         {
-            header("Location: index.php?error=relogin-database-update");
+            header("Location: index.php?error=err-relogin-database-update");
             exit;
         }
     }
@@ -100,7 +105,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->bindValue(":role", -1);
         if (! $stmt->execute())
         {
-            header("Location: index.php?error=database-register-player");
+            header("Location: index.php?error=err-database-register-player");
             exit;
         }
     }
@@ -111,13 +116,13 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     $player = $stmt->execute()->fetchArray();
     if (! $player)
     {
-        header("Location: index.php?error=database-get-player-infos");
+        header("Location: index.php?error=err-database-get-player-infos");
         exit;
     }
 }
 else
 {
-    header("Location: index.php?error=database-unknown-error");
+    header("Location: index.php?error=err-database-unknown");
     exit;
 }
 
@@ -161,6 +166,9 @@ $.ajax({
 <button id="btn-start">Inizio partita</button>
 
 <button id="btn-stop" hidden>Termina partita</button>
+
+<div id="error-msg">
+</div>
 
 <p id="timer"></p>
 
@@ -221,6 +229,12 @@ $("#btn-start").click(function()
     .done(function(data)
     {
         console.log(data);
+        if (data['error'])
+        {
+            console.log(data['status']);
+            displayError(getResource(data['status']));
+            return;
+        }
         getUpdate();
     });
 });
@@ -232,6 +246,12 @@ $("#btn-stop").click(function()
     .done(function(data)
     {
         console.log(data);
+        if (data['error'])
+        {
+            console.log(data['status']);
+            displayError(getResource(data['status']));
+            return;
+        }
         getUpdate();
     });
 });
@@ -241,6 +261,7 @@ $("#toggle-player-data").click(function() {
     $("#player-data").toggle("medium");
 });
 
+<?php if($player['Host'] == 1) { ?>
 // Pause/resume the timer by clicking on it (host only).
 $("#timer").click(function() {
     if ($(this).attr("data") != "paused")
@@ -249,6 +270,12 @@ $("#timer").click(function() {
         .done(function(data)
         {
             console.log(data);
+            if (data['error'])
+            {
+                console.log(data['status']);
+                displayError(getResource(data['status']));
+                return;
+            }
             getUpdate();
         });
         $(this).attr("data", "paused");
@@ -259,12 +286,18 @@ $("#timer").click(function() {
         .done(function(data)
         {
             console.log(data);
+            if (data['error'])
+            {
+                console.log(data['status']);
+                displayError(getResource(data['status']));
+                return;
+            }
             getUpdate();
         });
         $(this).attr("data", "playing");
     }
 });
-
+<?php }?>
 // The music is added to the page only when the user requests it.
 // By doing this the user does not have to download 10 MB of data each time he opens this page.
 $("#show-music").click(function() {
@@ -307,9 +340,11 @@ function getUpdate()
 {
     $.get("getUpdate.php", {key: "<?php echo $keyCode;?>"})
     .done(function(data) {
+        console.log(data);
         if (data['error'])
         {
-            console.log(data['message']);
+            console.log(data['status']);
+            displayError(getResource(data['status']));
             return;
         }
         
@@ -413,7 +448,6 @@ function getRole(location, index)
 // Localize the page by inserting the localized strings.
 function localize()
 {
-    console.log(resource);
     $("#share-link").html(getResource("share-link"));
     $("#share-whatsapp").html(getResource("share-whatsapp"));
     $('label[for="language"').html(getResource("language") + "&nbsp");
@@ -431,6 +465,12 @@ function localize()
 function getResource(res)
 {
     return resource.text[res];
+}
+
+function displayError(err)
+{
+    $("#error-msg").append("<p>" + err + "</p>");
+    setTimeout(function() {$("#error-msg").children().first().remove();}, 5000);
 }
 </script>
 

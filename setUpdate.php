@@ -6,7 +6,7 @@ session_start(['cookie_lifetime' => 86400]);
 if (! (isset($_GET['key']) && isset($_GET['action'])))
 {
     $output['error'] = true;
-    $output['status'] = "bad-params";
+    $output['status'] = "err-bad-params";
     echo json_encode($output);
     exit;
 }
@@ -19,7 +19,7 @@ if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 else
 {
     $output['error'] = true;
-    $output['status'] = "bad-key";
+    $output['status'] = "err-bad-key";
     echo json_encode($output);
     exit;
 }
@@ -30,7 +30,7 @@ $dbPath = "db/" . $keyCode . ".db";
 if(! file_exists($dbPath))
 {
     $output['error'] = true;
-    $output['status'] = "bad-key";
+    $output['status'] = "err-bad-key";
     echo json_encode($output);
     exit;
 }
@@ -45,7 +45,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     if (! $player)
     {
         $output['error'] = true;
-        $output['status'] = "bad-auth";
+        $output['status'] = "err-bad-auth";
         echo json_encode($output);
         exit;
     }
@@ -60,24 +60,20 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         if ($res['Playing'] == 1)
         {
             $output['error'] = true;
-            $output['status'] = "already-playing";
+            $output['status'] = "err-already-playing";
             echo json_encode($output);
             exit;
         }
         
         // Choose a random location.
         // Use EN.json, but it would be the same with every other file.
-        $array = json_decode(file_get_contents("lang/EN.json"));
-        $numberOfLocations = sizeof($array->locations); 
+        $resource = json_decode(file_get_contents("lang/EN.json"),TRUE);
+        $numberOfLocations = sizeof($resource['locations']); 
         $locationIndex = rand(0, $numberOfLocations - 1);
         // Thh duration depends on the number of players.
-        $stmt = $db->prepare("SELECT Name FROM Players");
-        $res = $stmt->execute();
-        $playersN = 0;
-        while ($res->fetchArray())
-        {
-            $playersN = $playersN + 1;
-        }
+        $stmt = $db->prepare("SELECT Count(*) FROM Players");
+        $res = $stmt->execute()->fetchArray();
+        $playersN = $res['Count(*)'];
         // Duration = 10 minutes if 5 or less players.
         // Duration = number of players + 5 if more than 5 players.
         $duration = ($playersN <= 5 ? 10 : $playerN + 5) * 60;
@@ -88,16 +84,15 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->execute();
         
         // Assign a random role to everyone.
-        $array = json_decode(file_get_contents("lang/EN.json"));
-        $numberOfLocations = sizeof($array->locations); 
-        $numberOfRoles = sizeof($array->locations[$locationIndex]->roles); // Use EN, but it would be the same with every other file.
+        $resource = json_decode(file_get_contents("lang/EN.json"), TRUE);
+        $numberOfRoles = sizeof($array['locations'][$locationIndex]['roles']); // Use EN, but it would be the same with every other file.
         $stmt = $db->prepare("SELECT Name FROM Players");
         $res = $stmt->execute();
         $players = array();
         while ($r = $res->fetchArray())
         {
             $stmt1 = $db->prepare("UPDATE Players SET Role=:role,First=0 WHERE Name=:name");
-            $stmt1->bindValue(":role", rand(1, $numberOfRoles)); // 0 is the spy.
+            $stmt1->bindValue(":role", rand(1, $numberOfRoles - 1)); // 0 is the spy.
             $stmt1->bindValue(":name", $r['Name']);
             $stmt1->execute();
             $players[] = $r['Name'];
@@ -113,7 +108,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->bindValue(":name", $players[rand(0, sizeof($players) - 1)]);
         $stmt->execute();
         $output['error'] = false;
-        $output['message'] = "game-started";
+        $output['status'] = "succ-game-started";
         echo json_encode($output);
         exit;
     }
@@ -126,7 +121,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->execute();
         
         $output['error'] = false;
-        $output['message'] = "game-stopped";
+        $output['status'] = "succ-game-stopped";
         echo json_encode($output);
         exit;
     }
@@ -141,7 +136,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         if ($match['Playing'] != 1 || $match['Paused'] != 0)
         {
             $output['error'] = true;
-            $output['status'] = "error";
+            $output['status'] = "err";
             echo json_encode($output);
             exit;
         }
@@ -157,14 +152,14 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
             $stmt->execute();
             
             $output['error'] = false;
-            $output['message'] = "game-paused";
+            $output['status'] = "succ-game-paused";
             echo json_encode($output);
             exit;
         }
         else
         {
             $output['error'] = false;
-            $output['message'] = "game-over";
+            $output['status'] = "err-game-over";
             echo json_encode($output);
             exit;
         }
@@ -193,7 +188,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $stmt->execute();
         
         $output['error'] = false;
-        $output['message'] = "game-resumed";
+        $output['status'] = "succ-game-resumed";
         echo json_encode($output);
         exit;
     }
@@ -201,7 +196,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     {
         // Wrong action.
         $output['error'] = true;
-        $output['status'] = "bad-params";
+        $output['status'] = "err-bad-params";
         echo json_encode($output);
         exit;
     }
@@ -210,7 +205,7 @@ else
 {
     // Unknown error opening the database.
     $output['error'] = true;
-    $output['status'] = "database-unknown-error";
+    $output['status'] = "err-database-unknown";
     echo json_encode($output);
     exit;
 }

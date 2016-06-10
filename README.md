@@ -80,13 +80,13 @@ With my version I changed some behaviours and part of the structure of the game,
  
  - thanks to PHP session management people can easily rejoin a game if they closed the page: refreshing the page has no influence on the game
 
- - I added three spy-themed music tracks at the end of the page
+ - I added three spy-themed music tracks at the end of the page, which can be activated only if wanted (save Internet data)
  
- - a banner aletring about cookie use
-
- - music can be activated only if wanted (save Internet data)
+ - I added a banner alerting about cookie use
  
  - language can be changed more easily and during the game as well
+ 
+ - error messages are actively shown explaining what went wrong
 
 ## What's up next?
 
@@ -96,11 +96,11 @@ These are the features I am thinking of implementing:
  
  - translations (you can already contribute via GitHub, but I'd like to add an easier way)
  
- - the host could be able to kick players
+ - the host should be able to kick players
+ 
+ - easy way to change your name in-game
 
  - another way to share the link: QR code
-
- - error messages are actively displayed explaining what went wrong
 
  - add a logging system (no IP, only country of origin and statistics for the game)
 

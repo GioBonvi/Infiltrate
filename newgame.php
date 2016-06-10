@@ -5,7 +5,7 @@ session_start(['cookie_lifetime' => 86400]);
 // Exit if some required parameter is missing.
 if (! isset($_POST['name']))
 {
-    header("Location: index.php?error=bad-params");
+    header("Location: index.php?error=err-bad-params");
     exit;
 }
 
@@ -16,7 +16,7 @@ if (preg_match("/^[a-zA-Z0-9]+$/", $_POST['name']))
 }
 else
 {
-    header("Location: index.php?error=bad-name");
+    header("Location: index.php?error=err-bad-name");
     exit;
 }
 
@@ -53,13 +53,13 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     }
     else
     {
-        header("Location: index.php?error=database-insert-host");
+        header("Location: index.php?error=err-database-insert-host");
         exit;
     }
 }
 else
 {
-    header("Location: index.php?error=database-unknown");
+    header("Location: index.php?error=err-database-unknown");
     exit;
 }
 ?>
