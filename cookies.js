@@ -23,7 +23,7 @@ function getCookie() {
 $(document).ready(function() {
     if (getCookie() != 1)
     {
-        $("body").prepend('<div id="accept-cookie">This site uses technical cookies. You probably don\'t know what they are, but if you do please consider that one of those cookies is used to display this banner about cookies being used. Isn\'t this nice? <button>OK</button></div>');
+        $("body").prepend('<div id="accept-cookie">' + getResource('cookie-warning') + '</div>');
         $("#accept-cookie button").click(function() {
             $("#accept-cookie").remove();
             createCookie();

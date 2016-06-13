@@ -157,9 +157,7 @@ $.ajax({
 <script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*name=[a-zA-Z0-9]*&*/g, "");</script>
 <p id="share-link">Per invitare altri giocatori condividi questo link:</p>
 <p><script>document.write(shareLink);</script></p>
-<p id="share-whatsapp"><a href="">Clicca qui</a> per condividerlo via Whatsapp.</p>
-<script>$("#share-whatsapp a").attr("href", "whatsapp://send?text=" + shareLink);</script>
-
+<p id="share-whatsapp"></p>
 
 <?php include_once("language-select.php"); ?>&nbsp;
 
@@ -403,21 +401,14 @@ function getUpdate()
         $("#players-list li").each(function() {
             if ($(this).attr("data") == "off")
             {
-                oldplayersOff.push($(this).text());
+                oldplayersOff.push($(this).attr("data-name"));
             }
         });
         $("#players-list").empty();
         // Reapply "off" status to the player in the list.
         data['players'].forEach(function(player, index) {
             var name = player['Name'];
-            if (oldplayersOff.indexOf(name) >= 0)
-            {
-                $("#players-list").append('<li data="off">' + name + (player['First'] == 1 ? ' (' + getResource("first") + ')' : '') +'</li>');
-            }
-            else
-            {
-                $("#players-list").append('<li data="on">' + name + (player['First'] == 1 ? ' (' + getResource("first") + ')' : '') + '</li>');
-            }
+            $("#players-list").append('<li data="' + (oldplayersOff.indexOf(name) >= 0 ? "off" : "on") + '" data-name="' + name + '">' + name + (player['First'] == 1 ? ' (' + getResource("first") + ')' : '') +'</li>');
         });
         // When a player name is clicked it's set to strikethrough.
         $("#players-list li").click(function() {
@@ -450,6 +441,7 @@ function localize()
 {
     $("#share-link").html(getResource("share-link"));
     $("#share-whatsapp").html(getResource("share-whatsapp"));
+    $("#share-whatsapp a").attr("href", "whatsapp://send?text=" + shareLink);
     $('label[for="language"').html(getResource("language") + "&nbsp");
     $("#player-data-header").html(getResource("player-data-header"));
     $("#toggle-player-data").html(getResource("toggle-player-data"));

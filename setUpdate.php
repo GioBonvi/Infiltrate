@@ -69,14 +69,14 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         // Use EN.json, but it would be the same with every other file.
         $resource = json_decode(file_get_contents("lang/EN.json"),TRUE);
         $numberOfLocations = sizeof($resource['locations']); 
-        $locationIndex = rand(0, $numberOfLocations - 1);
+        $locationIndex = mt_rand(0, $numberOfLocations - 1);
         // Thh duration depends on the number of players.
         $stmt = $db->prepare("SELECT Count(*) FROM Players");
         $res = $stmt->execute()->fetchArray();
         $playersN = $res['Count(*)'];
         // Duration = 10 minutes if 5 or less players.
         // Duration = number of players + 5 if more than 5 players.
-        $duration = ($playersN <= 5 ? 10 : $playerN + 5) * 60;
+        $duration = ($playersN <= 5 ? 10 : $playersN + 5) * 60;
         
         $stmt = $db->prepare("INSERT INTO Match (Location,Playing,EndTime,Paused) VALUES (:loc,1,:endTime,0)");
         $stmt->bindValue(":loc", $locationIndex);
@@ -85,14 +85,14 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         
         // Assign a random role to everyone.
         $resource = json_decode(file_get_contents("lang/EN.json"), TRUE);
-        $numberOfRoles = sizeof($array['locations'][$locationIndex]['roles']); // Use EN, but it would be the same with every other file.
+        $numberOfRoles = sizeof($resource['locations'][$locationIndex]['roles']); // Use EN, but it would be the same with every other file.
         $stmt = $db->prepare("SELECT Name FROM Players");
         $res = $stmt->execute();
         $players = array();
         while ($r = $res->fetchArray())
         {
             $stmt1 = $db->prepare("UPDATE Players SET Role=:role,First=0 WHERE Name=:name");
-            $stmt1->bindValue(":role", rand(1, $numberOfRoles - 1)); // 0 is the spy.
+            $stmt1->bindValue(":role", mt_rand(1, $numberOfRoles - 1)); // 0 is the spy.
             $stmt1->bindValue(":name", $r['Name']);
             $stmt1->execute();
             $players[] = $r['Name'];
