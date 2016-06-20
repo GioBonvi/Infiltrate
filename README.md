@@ -76,7 +76,7 @@ With my version I changed some behaviours and part of the structure of the game,
 
  - I think my version has less connection problem (ghost players, match not starting), but it could also be due to a lessere load of the server
  
- - I built the game around the idea that each match has a **host** who is the only one who has some _powers_ over other users: he starts and ends the matches, he can kick players. This solved some problems I experienced in the other version and prevents users from randomly kicking other players
+ - I built the game around the idea that each match has a **host** who is the only one who has some _powers_ over other users: he starts and ends the matches, he can kick players. This solved some problems I experienced in the other version (more than one player tried to do the same action at the same time resulting in freezes and crashes) and prevents users from randomly kicking other players
  
  - thanks to PHP session management people can easily rejoin a game if they closed the page: refreshing the page has no influence on the game
 
@@ -95,8 +95,6 @@ These are the features I am thinking of implementing:
  - new roles and locations (obvioulsy)
  
  - translations (you can already contribute via GitHub, but I'd like to add an easier way)
- 
- - the host should be able to kick players
  
  - easy way to change your name in-game
 
