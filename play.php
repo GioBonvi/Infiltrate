@@ -17,7 +17,7 @@ if (! isset($_COOKIE['language']) || ! file_exists("lang/" . $_COOKIE['language'
 // Check if key is valid.
 if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
-    $keyCode = $_GET['key'];
+    $keyCode = strtolower($_GET['key']);
 }
 else
 {
@@ -167,13 +167,25 @@ $.ajax({
 
 <button id="btn-stop" hidden>Termina partita</button>
 
+<br>
+
+<?php if ($player['Host']) { ?>
+<div id="kick-player">
+    <p id="kick-player-label"></p>
+    <select id="kick-player-list">
+
+    </select>
+    <button id="kick-player-button">
+</div>
+<?php } ?>
+
 <div id="error-msg">
 </div>
 
 <p id="timer"></p>
 
 
-<h2 id="player-data-header">Datia personaggio</h2>
+<h2 id="player-data-header">Dati personaggio</h2>
 <div id="toggle-player-data">Mostra/nascondi</div>
 <div id="player-data">
 </div>
@@ -217,9 +229,9 @@ $("#location-list li").click(function() {
 // This will contain the unix timestamp of the end of the match (for the clock).
 endTime = 0;
 
-// Update the page every 10 seconds and the clock every half second.
+// Update the page every 5 seconds and the clock every half second.
 getUpdate();
-setInterval(getUpdate, 10000);
+setInterval(getUpdate, 5000);
 setInterval(setTimer, 500);
 
 // Start a new match.
@@ -254,6 +266,25 @@ $("#btn-stop").click(function()
         }
         getUpdate();
     });
+});
+
+$("#kick-player-button").click(function() {
+    var target = $("#kick-player-list option:selected").val();
+    if (target != "")
+    {
+        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "kick", target: target})
+        .done(function(data)
+        {
+            console.log(data);
+            if (data['error'])
+            {
+                console.log(data['status']);
+                displayError(getResource(data['status']));
+                return;
+            }
+            getUpdate();
+        });
+    }
 });
 
 // Hide sensitive data (role and location).
@@ -345,6 +376,10 @@ function getUpdate()
         {
             console.log(data['status']);
             displayError(getResource(data['status']));
+            if (data['status'] == "err-bad-auth")
+            {
+                window.location.href = "index.php";
+            }
             return;
         }
         
@@ -359,9 +394,9 @@ function getUpdate()
             {
                 endTime = -1;
             }
+            
             $("#toggle-player-data").show();
             $("#player-data").empty();
-            $("#player-data").show();
             var name = "<p>" + getResource("name") + ": " + data['player']['Name'] + "</p>";
             var role = "<p>" + getResource("role") + ": " + getRole(data['match']['Location'], data['player']['Role']) + "</p>";
             var location = "<p>" + getResource("location") + ": " + (data['player']['Role'] != 0 ? getLocation(data['match']['Location']) : getResource("unknown")) + "</p>";
@@ -376,11 +411,14 @@ function getUpdate()
                 $("#btn-start").hide();
                 $("#btn-stop").hide();
             }
+            
+            $("#kick-player").hide();
         }
         else
         {
             // Show the collected data (game is off).
             endTime = 0;
+            
             $("#toggle-player-data").hide();
             $("#player-data").empty();
             $("#player-data").show();
@@ -395,6 +433,18 @@ function getUpdate()
                 $("#btn-start").hide();
                 $("#btn-stop").hide();
             }              
+            
+            // Generate new list of players to kick.
+            
+            $("#kick-player-list").empty();
+            $("#kick-player-list").append("<option data-name=\"\">" + getResource("nobody") + "</option>");
+            data['players'].forEach(function (player, index) {
+                if (player.Name != "<?php echo $player['Name'];?>")
+                {
+                    $("#kick-player-list").append("<option data-name=\"" + player.Name + "\">" + player.Name + "</option>");
+                }
+            });
+            $("#kick-player").show();
         }
         
         // Update player list.
@@ -457,6 +507,8 @@ function localize()
     $("#location-list-header").html(getResource("location-list-header"));
     $("#btn-start").html(getResource("btn-start"));
     $("#btn-stop").html(getResource("btn-stop"));
+    $("#kick-player-label").html(getResource("kick-player-label"));
+    $("#kick-player-button").html(getResource("kick-player-button"));
     $("#show-music").html(getResource("show-music"));
     $("#footer").html(getResource("footer"));
 }

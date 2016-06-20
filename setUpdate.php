@@ -14,7 +14,7 @@ if (! (isset($_GET['key']) && isset($_GET['action'])))
 // Verify that key is valid.
 if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
-    $keyCode = $_GET['key'];
+    $keyCode = strtolower($_GET['key']);
 }
 else
 {
@@ -42,15 +42,9 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     $stmt = $db->prepare("SELECT * FROM Players WHERE (SessID=:sessID AND Host=1)");
     $stmt->bindValue(":sessID", session_id());
     $player = $stmt->execute()->fetchArray();
-    if (! $player)
-    {
-        $output['error'] = true;
-        $output['status'] = "err-bad-auth";
-        echo json_encode($output);
-        exit;
-    }
-
-    if ($_GET['action'] == "play")
+    $host = ($player ? TRUE : FALSE);
+    
+    if ($_GET['action'] == "play" && $host)
     {
         // Start a match if there is not another match going on.
         
@@ -112,7 +106,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "stop")
+    else if ($_GET['action'] == "stop" && $host)
     {
         // Stop the match.
         
@@ -125,7 +119,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "pause")
+    else if ($_GET['action'] == "pause" && $host)
     {
         // Pause or resume the clock.
         
@@ -164,7 +158,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
             exit;
         }
     }
-    else if ($_GET['action'] == "resume")
+    else if ($_GET['action'] == "resume" && $host)
     {
         // Resume a paused game.
         
@@ -191,6 +185,52 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         $output['status'] = "succ-game-resumed";
         echo json_encode($output);
         exit;
+    }
+    else if ($_GET['action'] == "kick" && $_GET['target'] && $host)
+    {
+        // Kick a player from the game.
+        
+        // Check that such a player exists and he is not the Host.
+        $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE (Name=:name AND Host<>1)");
+        $stmt->bindValue(":name", $_GET['target']);
+        $res = $stmt->execute()->fetchArray();
+        if ($res['Count(*)'] != 1)
+        {
+            $output['error'] = true;
+            $output['status'] = "err-bad-target-player";
+            echo json_encode($output);
+            exit;
+        }
+        
+        // Check that the game is not active.
+        $stmt = $db->prepare("SELECT Playing FROM Match LIMIT 1");
+        $res = $stmt->execute()->fetchArray();
+        if ($res['Playing'] == 1)
+        {
+            $output['error'] = true;
+            $output['status'] = "err-match-active";
+            echo json_encode($output);
+            exit;
+        }
+        
+        // Remove the player from the match.
+        $stmt = $db->prepare("DELETE FROM Players WHERE Name=:name");
+        $stmt->bindValue(":name", $_GET['target']);
+        $res = $stmt->execute();
+        if (! $res)
+        {
+            $output['error'] = true;
+            $output['status'] = "err-database-unknown";
+            echo json_encode($output);
+            exit;
+        }
+        else
+        {
+            $output['error'] = false;
+            $output['status'] = "succ-player-kicked";
+            echo json_encode($output);
+            exit;
+        }
     }
     else
     {

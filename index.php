@@ -8,7 +8,7 @@ $keyCode = "";
 // Check if a key was specified.
 if (isset($_GET['key']) && strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
-    $keyCode = $_GET['key'];
+    $keyCode = strtolower($_GET['key']);
     $dbPath = "db/" . $keyCode . ".db";
 
     // Check if the database exists.

@@ -14,7 +14,7 @@ if (! isset($_GET['key']))
 // Check if key is valid.
 if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
 {
-    $keyCode = $_GET['key'];
+    $keyCode = strtolower($_GET['key']);
 }
 else
 {
