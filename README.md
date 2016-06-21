@@ -84,7 +84,7 @@ With my version I changed some behaviours and part of the structure of the game,
  
  - I added a banner alerting about cookie use
  
- - language can be changed more easily and during the game as well
+ - language and name can be changed more easily and during the game without any problems
  
  - error messages are actively shown explaining what went wrong
 
@@ -95,8 +95,6 @@ These are the features I am thinking of implementing:
  - new roles and locations (obvioulsy)
  
  - translations (you can already contribute via GitHub, but I'd like to add an easier way)
- 
- - easy way to change your name in-game
 
  - another way to share the link: QR code
 
