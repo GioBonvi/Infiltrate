@@ -186,7 +186,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "kick" && $_GET['target'] && $host)
+    else if ($_GET['action'] == "kick" && isset($_GET['target']) && $host)
     {
         // Kick a player from the game.
         
@@ -228,6 +228,52 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         {
             $output['error'] = false;
             $output['status'] = "succ-player-kicked";
+            echo json_encode($output);
+            exit;
+        }
+    }
+    else if ($_GET['action'] == "change-name" && isset($_GET['name']))
+    {
+        // Check user's name is not already taken by some other player.
+        if (preg_match("/^[a-zA-Z0-9]+$/", $_GET['name']))
+        {
+            $name = $_GET['name'];
+            
+            $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE Name=:name");
+            $stmt->bindValue(":name", $name);
+            $res = $stmt->execute()->fetchArray();
+            if ($res['Count(*)'] != 0)
+            {
+                $output['error'] = true;
+                $output['status'] = "err-bad-name";
+                echo json_encode($output);
+                exit;
+            }
+        }
+        else
+        {
+            $output['error'] = true;
+            $output['status'] = "err-bad-name";
+            echo json_encode($output);
+            exit;
+        }
+        
+        // Update player's name
+        $stmt = $db->prepare("UPDATE Players SET Name=:name WHERE SessID=:sessID");
+        $stmt->bindValue(":name", $name);
+        $stmt->bindValue(":sessID", session_id());
+        $res = $stmt->execute();
+        if (! $res)
+        {
+            $output['error'] = true;
+            $output['status'] = "err-database-unkown";
+            echo json_encode($output);
+            exit;
+        }
+        else
+        {
+            $output['error'] = false;
+            $output['status'] = "succ-name-changed";
             echo json_encode($output);
             exit;
         }

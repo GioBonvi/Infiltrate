@@ -417,9 +417,11 @@
     "player-list-header": "Players",
     "location-list-header": "Locations",
     "btn-start": "Start game",
-    "bnt-stop": "End game",
+    "btn-stop": "End game",
     "kick-player-label": "Kick player: ",
     "kick-player-button": "Kick",
+    "change-name-button": "Change name",
+    "change-name-text": "Insert the new name or press 'Cancel' to exit",
     "nobody": "Nobody",
     "role": "Role",
     "location": "Location",
@@ -445,6 +447,7 @@
     "succ-game-stopped": "The match has ended",
     "succ-game-paused": "Time has been paused",
     "succ-game-resumed": "Time has been resumed",
-    "succ-player-kicked": "Target player has been kicked"
+    "succ-player-kicked": "Target player has been kicked",
+    "succ-name-changed": "Name changed"
   }
 }

@@ -36,7 +36,7 @@ if(! file_exists($dbPath))
 
 if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
 {
-    // Check user's name is not already taken by some other player.
+    // Check user's name is valid and not already taken by some other player.
     if (preg_match("/^[a-zA-Z0-9]+$/", $_GET['name']))
     {
         $name = $_GET['name'];
@@ -155,15 +155,15 @@ $.ajax({
 </script>
 <h1>Spyfall</h1>
 <script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*name=[a-zA-Z0-9]*&*/g, "");</script>
-<p id="share-link">Per invitare altri giocatori condividi questo link:</p>
+<p id="share-link">To invite other players share this link:</p>
 <p><script>document.write(shareLink);</script></p>
 <p id="share-whatsapp"></p>
 
 <?php include_once("language-select.php"); ?>&nbsp;
 
-<button id="btn-start">Inizio partita</button>
+<button id="btn-start">Start game</button>
 
-<button id="btn-stop" hidden>Termina partita</button>
+<button id="btn-stop" hidden>Stop game</button>
 
 <br>
 
@@ -177,22 +177,28 @@ $.ajax({
 </div>
 <?php } ?>
 
+<br>
+
+<button id="change-name-button">
+Change name
+</button>
+
 <div id="error-msg">
 </div>
 
 <p id="timer"></p>
 
 
-<h2 id="player-data-header">Dati personaggio</h2>
-<div id="toggle-player-data">Mostra/nascondi</div>
+<h2 id="player-data-header">Player data</h2>
+<div id="toggle-player-data">Show/hide</div>
 <div id="player-data">
 </div>
 
-<h2 id="player-list-header">Giocatori</h2>
+<h2 id="player-list-header">Players</h2>
 <ul id="players-list">
 </ul>
 
-<h2 id="location-list-header">Location</h2>
+<h2 id="location-list-header">Locations</h2>
 <ul id="location-list">
 </ul>
 
@@ -283,6 +289,32 @@ $("#kick-player-button").click(function() {
             getUpdate();
         });
     }
+});
+
+$("#change-name-button").click(function() {
+    var newname = window.prompt(getResource("change-name-text"), "");
+    if (newname == null)
+    {
+        return;
+    }
+    if (! /^[a-zA-Z0-9]+$/.test(newname))
+    {
+        displayError(getResource("err-bad-name"));
+        return
+    }
+    
+    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "change-name", name: newname})
+    .done(function(data)
+    {
+        console.log(data);
+        if (data['error'])
+        {
+            console.log(data['status']);
+            displayError(getResource(data['status']));
+            return;
+        }
+        getUpdate();
+    });
 });
 
 // Hide sensitive data (role and location).
@@ -501,6 +533,7 @@ function localize()
     $("#btn-stop").html(getResource("btn-stop"));
     $("#kick-player-label").html(getResource("kick-player-label"));
     $("#kick-player-button").html(getResource("kick-player-button"));
+    $("#change-name-button").html(getResource("change-name-button"));    
     $("#show-music").html(getResource("show-music"));
     $("#footer").html(getResource("footer"));
 }

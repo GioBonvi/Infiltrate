@@ -417,9 +417,11 @@
     "player-list-header": "Giocatori",
     "location-list-header": "Luoghi",
     "btn-start": "Inizia partita",
-    "bnt-stop": "Termina partita",
+    "btn-stop": "Termina partita",
     "kick-player-label": "Rimuovi giocatore: ",
     "kick-player-button": "Rimuovi",
+    "change-name-button": "Cambia nome",
+    "change-name-text": "Inserisci il nuovo nome o clicca 'Annulla' per uscire",
     "nobody": "Nessuno",
     "role": "Ruolo",
     "location": "Luogo",
@@ -445,6 +447,7 @@
     "succ-game-stopped": "La partita è terminata",
     "succ-game-paused": "Il tempo è stato fermato",
     "succ-game-resumed": "Il tempo è ripartito",
-    "succ-player-kicked": "Il giocatore è stato rimosso"
+    "succ-player-kicked": "Il giocatore è stato rimosso",
+    "succ-name-changed": "Nome cambiato"
   }
 }
