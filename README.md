@@ -98,8 +98,6 @@ These are the features I am thinking of implementing:
  
  - translations (you can already contribute via GitHub, but I'd like to add an easier way)
 
- - another way to share the link: QR code
-
  - add a logging system (no IP, only country of origin and statistics for the game)
 
  - a voting system (requested by those who don't play vis-a-vis, but via Skype or similar applications)
