@@ -36,6 +36,18 @@ h2 {
     margin: 0 1em 0 1em;
 }
 
+#share {
+    display: flex;
+}
+
+#share>* {
+    margin: 0.1em;
+}
+
+#qr-code {
+    margin: 1em;
+}
+
 #error-msg {
     font-weight: 700;
     color: red;
