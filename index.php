@@ -28,7 +28,7 @@ if (! isset($_COOKIE['language']) || ! file_exists("lang/" . $_COOKIE['language'
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
-    <title>Spyfall</title>
+    <title>Infiltrate</title>
     <meta name="author" content="Giorgio Bonvicini">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +51,7 @@ $.ajax({
 });
 </script>
 
-<h1>Spyfall</h1>
+<h1>Infiltrate</h1>
 <div class="container" id="error-msg">
 <?php
 if (isset($_GET['error']))
@@ -93,13 +93,13 @@ if (isset($_GET['error']))
 <button id="btn-help">Help</button>
 </div>
 <div id="help" hidden>
-    <p>Welcome to Spyfall! In this game one of the players will be chosen to be the spy: he will have to infiltrate among the other player using his <i>intuition and spying skills</i>: everyone will be in a common location and everyone except the spy will know the location (e.g. "the supermarket") and the role they are assigned (e.g. "cashier" or "customer").<br>One of the players is randomly chosen to be the first, and he/she will start the game by asking a question to another player about the location; that player will answer the question and then proceed to ask another question to another player and so on. The spy wins if he/she can guess the location from the questions and the asnswers, while the "normal" players win if they guess who the spy is.<br>The difficulty (and the fun) of the game lies in the choice of the right questions, precise enough to call the bluff of the spy, but vague or difficult enough so that the spy does not understand the location.</p>
+    <p>Welcome to Infiltrate! In this game one of the players will be chosen to be the spy: he will have to infiltrate among the other player using his <i>intuition and spying skills</i>: everyone will be in a common location and everyone except the spy will know the location (e.g. "the supermarket") and the role they are assigned (e.g. "cashier" or "customer").<br>One of the players is randomly chosen to be the first, and he/she will start the game by asking a question to another player about the location; that player will answer the question and then proceed to ask another question to another player and so on. The spy wins if he/she can guess the location from the questions and the asnswers, while the "normal" players win if they guess who the spy is.<br>The difficulty (and the fun) of the game lies in the choice of the right questions, precise enough to call the bluff of the spy, but vague or difficult enough so that the spy does not understand the location.</p>
     <p>The spy can try to guess the location at any time (for example by asking "Are we in the military base?"). If that's correct the spy wins, if it's wrong everybody else wins. Any player can call a vote against any other player by stating who he thinks the spy is: if the majority of the players agrees the suspected player is <b>accused</b> and must reveal if he was or not the spy. If he was not then the spy wins, but if he was he can try a wild guess; if he gets it right he wins, otherwise everybody else wins. The spy automatically wins if the timer reaches "00:00".</p>
     <p>Remember the social nature of this game: don't be distracted by your smartphone and use it only when necessary: focus on people around you and try to call the spy's bluff! (Pro-tip: it also makes you more <i>spyish</i> if you constantly look down and the locations never interacting and avoiding eye contact)</p>
 </div>
 <footer id="footer">
-<p>This project's source code is available on <a href="https://github.com/GioBonvi/Spyfall">GitHub</a></p>
-<p><a href="http://international.hobbyworld.ru/catalog/25-spyfall/">Spyfall</a> is designed by Alexandr Ushan, published by <a href="http://international.hobbyworld.ru/">Hobby World</a></p>
+<p>This project's source code is available on <a href="https://github.com/GioBonvi/Infiltrate">GitHub</a></p>
+<p>This game is inspired by <a href="http://international.hobbyworld.ru/catalog/25-spyfall/">Spyfall</a>, designed by Alexandr Ushan, published by <a href="http://international.hobbyworld.ru/">Hobby World</a></p>
 </footer>
 
 <script>

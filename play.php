@@ -132,7 +132,7 @@ else
 <!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
-    <title>Spyfall</title>
+    <title>Infiltrate</title>
     <meta name="author" content="Giorgio Bonvicini">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Marvel:700,400'>
@@ -153,7 +153,7 @@ $.ajax({
     resource = data;
 });
 </script>
-<h1>Spyfall</h1>
+<h1>Infiltrate</h1>
 <script>shareLink = window.location.href.replace("play.php", "index.php").replace(/&*name=[a-zA-Z0-9]*&*/g, "");</script>
 <p id="share-link">To invite other players share this link:</p>
 <p><script>document.write(shareLink);</script></p>
@@ -207,8 +207,8 @@ Change name
 <button id="show-music">Show the music</button>
 
 <footer id="footer">
-<p>This project's source code is available on <a href="https://github.com/GioBonvi/Spyfall">GitHub</a></p>
-<p><a href="http://international.hobbyworld.ru/catalog/25-spyfall/">Spyfall</a> is designed by Alexandr Ushan, published by <a href="http://international.hobbyworld.ru/">Hobby World</a></p>
+<p>This project's source code is available on <a href="https://github.com/GioBonvi/Infiltrate">GitHub</a></p>
+<p>Infiltrate is inspired by <a href="http://international.hobbyworld.ru/catalog/25-spyfall/">Spyfall</a>, designed by Alexandr Ushan, published by <a href="http://international.hobbyworld.ru/">Hobby World</a></p>
 </footer>
 
 <script>

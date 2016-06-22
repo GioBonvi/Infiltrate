@@ -1,8 +1,8 @@
-# Spyfall
+# Infiltrate
 
-Spyfall is a social game, meaning it has to be played _in real life_, _vis a vis_, like at a party or with your friends.
+Infiltrate is a social game, meaning it has to be played _in real life_, _vis a vis_, like at a party or with your friends.
 
-You can play it on [my website](http://spyfall.bonvi.atervista.org) or serve it on your own server.
+You can play it on [my website](http://infiltrate.bonvi.atervista.org) or serve it on your own server.
 
 ## How to play
 
@@ -36,7 +36,7 @@ The page will update displaying:
  
 ## Where does this come from?
 
-This is a long story: I discovered this game on a Youtube channel ([NODE](https://www.youtube.com/watch?v=zDqlSq6NWSU)) and I immediately fell in love with it. I played it for some time (the site as they say in the video is [Spyfall](http://spyfall.crabhat.com)) with my friends and we had lots of fun, but at a certain point I started to feel that _itch_ on my fingers which, as I learned to understand, meant "Wow, that's great, but shouldn't it be possibile to do this? And what is that? I wish it did this and not that...".
+This is a long story: I discovered this game on a Youtube channel ([NODE](https://www.youtube.com/watch?v=zDqlSq6NWSU)) and I immediately fell in love with it. I played it for some time (the site as they say in the video is [http://spyfall.crabhat.com](http://spyfall.crabhat.com)) with my friends and we had lots of fun, but at a certain point I started to feel that _itch_ on my fingers which, as I learned to understand, meant "Wow, that's great, but shouldn't it be possibile to do this? And what is that? I wish it did this and not that...".
 
 So, knowing that the project was [open source](https://github.com/evanbrumley/spyfall) I read the source code to have a general idea of the project... and ended up doing pretty much everything _my way_ (which means clunky, messy, strange and probably completely impossible to understand code): however thank you [Evan](https://github.com/evanbrumley/) it would have not been possible without you!
 
@@ -48,7 +48,7 @@ By the way Spyfall was not invented nor by me nor by evanbrumley:
 
 ## How to contribute
 
-The whole project is completely open source and licensed under the [GNU GPL v.3 license](https://github.com/GioBonvi/Spyfall/blob/master/LICENSE) so feel free to create your own version.
+The whole project is completely open source and licensed under the [GNU GPL v.3 license](https://github.com/GioBonvi/Infiltrate/blob/master/LICENSE) so feel free to create your own version.
 
 If you want to contribute to the translations please use EN.json or IT.json as a base model to create new languages. A translation can be accepted only if it 100% complete, otherwise it won't work. The order of the locations and roles must be the same in every file.
 
@@ -56,7 +56,7 @@ If you want to contribute to the translations please use EN.json or IT.json as a
 
 Simply clone the git repository into your webserver
 ````
-git clone https://github.com/GioBonvi/Spyfall
+git clone https://github.com/GioBonvi/Infiltrate
 ````
 and make sure the web server has write access to the db folder.
 
@@ -74,7 +74,9 @@ Authentication is based on simple PHP session management (via cookies).
 
 With my version I changed some behaviours and part of the structure of the game, mainly little changes without great impact, but I like them:
 
- - I think my version has less connection problem (ghost players, match not starting), but it could also be due to a lessere load of the server
+ - I changed the name of the game from 'Spyfall' to 'Infiltrate' to avoid problems with trademarks
+
+ - I think my version has less connection problem (ghost players, match not starting), but it could also be due to a lesser load of the server
  
  - I built the game around the idea that each match has a **host** who is the only one who has some _powers_ over other users: he starts and ends the matches, he can kick players. This solved some problems I experienced in the other version (more than one player tried to do the same action at the same time resulting in freezes and crashes) and prevents users from randomly kicking other players
  
