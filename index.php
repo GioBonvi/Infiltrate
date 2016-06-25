@@ -30,8 +30,9 @@ if (! isset($_COOKIE['language']) || ! file_exists("lang/" . $_COOKIE['language'
     <meta charset="UTF-8">
     <title>Infiltrate</title>
     <meta name="author" content="Giorgio Bonvicini">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f8f1ba">
+    
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Marvel:700,400'>
     <link rel='stylesheet' type='text/css' href="main.css">
     
