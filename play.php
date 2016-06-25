@@ -168,7 +168,7 @@ $.ajax({
 </div>
 
 <script>
-$("#qr-code").qrcode({ background: "#fcf9e2", text: shareLink});
+$("#qr-code").qrcode({ maxVersion: 20, background: "#fcf9e2", text: shareLink});
 </script>
 
 <br>
@@ -267,7 +267,7 @@ $("#share-qr").click(function() {
 // Start a new match.
 $("#btn-start").click(function()
 {
-    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "play"})
+    $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "play"})
     .done(function(data)
     {
         console.log(data);
@@ -284,7 +284,7 @@ $("#btn-start").click(function()
 // End the current match.
 $("#btn-stop").click(function()
 {
-    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "stop"})
+    $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "stop"})
     .done(function(data)
     {
         console.log(data);
@@ -302,7 +302,7 @@ $("#kick-player-button").click(function() {
     var target = $("#kick-player-list option:selected").val();
     if (target != "")
     {
-        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "kick", target: target})
+        $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "kick", target: target})
         .done(function(data)
         {
             console.log(data);
@@ -329,7 +329,7 @@ $("#change-name-button").click(function() {
         return
     }
     
-    $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "change-name", name: newname})
+    $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "change-name", name: newname})
     .done(function(data)
     {
         console.log(data);
@@ -353,7 +353,7 @@ $("#toggle-player-data").click(function() {
 $("#timer").click(function() {
     if ($(this).attr("data") != "paused")
     {
-        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "pause"})
+        $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "pause"})
         .done(function(data)
         {
             console.log(data);
@@ -369,7 +369,7 @@ $("#timer").click(function() {
     }
     else
     {
-        $.get("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "resume"})
+        $.post("setUpdate.php" , {key: "<?php echo $keyCode;?>", action: "resume"})
         .done(function(data)
         {
             console.log(data);

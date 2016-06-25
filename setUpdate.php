@@ -3,7 +3,7 @@ header('Content-Type: application/json; charset=utf-8');
 session_start(['cookie_lifetime' => 86400]);
 
 // Exit if no key or action is specified.
-if (! (isset($_GET['key']) && isset($_GET['action'])))
+if (! (isset($_POST['key']) && isset($_POST['action'])))
 {
     $output['error'] = true;
     $output['status'] = "err-bad-params";
@@ -12,9 +12,9 @@ if (! (isset($_GET['key']) && isset($_GET['action'])))
 }
 
 // Verify that key is valid.
-if (strlen($_GET['key']) == 6 && ctype_alnum($_GET['key']))
+if (strlen($_POST['key']) == 6 && ctype_alnum($_POST['key']))
 {
-    $keyCode = strtolower($_GET['key']);
+    $keyCode = strtolower($_POST['key']);
 }
 else
 {
@@ -44,7 +44,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
     $player = $stmt->execute()->fetchArray();
     $host = ($player ? TRUE : FALSE);
     
-    if ($_GET['action'] == "play" && $host)
+    if ($_POST['action'] == "play" && $host)
     {
         // Start a match if there is not another match going on.
         
@@ -106,7 +106,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "stop" && $host)
+    else if ($_POST['action'] == "stop" && $host)
     {
         // Stop the match.
         
@@ -119,7 +119,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "pause" && $host)
+    else if ($_POST['action'] == "pause" && $host)
     {
         // Pause or resume the clock.
         
@@ -158,7 +158,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
             exit;
         }
     }
-    else if ($_GET['action'] == "resume" && $host)
+    else if ($_POST['action'] == "resume" && $host)
     {
         // Resume a paused game.
         
@@ -186,13 +186,13 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         echo json_encode($output);
         exit;
     }
-    else if ($_GET['action'] == "kick" && isset($_GET['target']) && $host)
+    else if ($_POST['action'] == "kick" && isset($_POST['target']) && $host)
     {
         // Kick a player from the game.
         
         // Check that such a player exists and he is not the Host.
         $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE (Name=:name AND Host<>1)");
-        $stmt->bindValue(":name", $_GET['target']);
+        $stmt->bindValue(":name", $_POST['target']);
         $res = $stmt->execute()->fetchArray();
         if ($res['Count(*)'] != 1)
         {
@@ -215,7 +215,7 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
         
         // Remove the player from the match.
         $stmt = $db->prepare("DELETE FROM Players WHERE Name=:name");
-        $stmt->bindValue(":name", $_GET['target']);
+        $stmt->bindValue(":name", $_POST['target']);
         $res = $stmt->execute();
         if (! $res)
         {
@@ -232,12 +232,12 @@ if ($db = new SQLite3($dbPath, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE))
             exit;
         }
     }
-    else if ($_GET['action'] == "change-name" && isset($_GET['name']))
+    else if ($_POST['action'] == "change-name" && isset($_POST['name']))
     {
         // Check user's name is not already taken by some other player.
-        if (preg_match("/^[a-zA-Z0-9]+$/", $_GET['name']))
+        if (preg_match("/^[a-zA-Z0-9]+$/", $_POST['name']))
         {
-            $name = $_GET['name'];
+            $name = $_POST['name'];
             
             $stmt = $db->prepare("SELECT Count(*) FROM Players WHERE Name=:name");
             $stmt->bindValue(":name", $name);
