@@ -396,7 +396,52 @@
         "Malato terminale",
         "Parente di un paziente"
       ]
-    }    
+    },
+    {
+      "name": "Giungla",
+      "roles": [
+        "Spia",
+        "Esploratore",
+        "Turista",
+        "Cacciatore",
+        "Guerrigliero",
+        "Indigeno",
+        "Guida",
+        "Turista disperso",
+        "Taglialegna"
+      ]
+    },
+    {
+      "name": "Cinema",
+      "roles": [
+        "Spia",
+        "Cassiere",
+        "Uscere",
+        "Spettatore",
+        "Attore",
+        "Addetto alle pulizie",
+        "Addetto alla sicurezza"
+      ]
+    },
+    {
+      "name": "Strada",
+      "roles": [
+        "Spia",
+        "Poliziotto",
+        "Pedone",
+        "Autista (macchina)",
+        "Autista (autobus)",
+        "Autista (taxi)",
+        "Passeggero (macchina)",
+        "Passeggero (autobus)",
+        "Passeggero (taxi)",
+        "Ciclista",
+        "Motociclista",
+        "Mendicante",
+        "Artista di strada",
+        "Accalappiacani"
+      ]
+    }
   ],
   "text": {
     "new-match-header": "Crea una nuova partita",

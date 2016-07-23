@@ -396,7 +396,52 @@
         "Terminally ill patient",
         "Patient's relative"
       ]
-    }    
+    },
+    {
+      "name": "Jungle",
+      "roles": [
+        "Spy",
+        "Explorer",
+        "Tourist",
+        "Hunter",
+        "Guerrilla fighter",
+        "Indigenous",
+        "Guide",
+        "Lost tourist",
+        "Lumberjack"
+      ]
+    },
+    {
+      "name": "Cinema",
+      "roles": [
+        "Spy",
+        "Cashier",
+        "Usher",
+        "Spectator",
+        "Actor",
+        "Cleaner",
+        "Security"
+      ]
+    },
+    {
+      "name": "Street",
+      "roles": [
+        "Spy",
+        "Policeman",
+        "Pedestrian",
+        "Driver (car)",
+        "Driver (bus)",
+        "Driver (taxi)",
+        "Passenger (car)",
+        "Passenger (bus)",
+        "Passenger (taxi)",
+        "Cyclist",
+        "Motorcyclist",
+        "Beggar",
+        "Street performer",
+        "Dogcatcher"
+      ]
+    }
   ],
   "text": {
     "new-match-header": "Create a new match",
