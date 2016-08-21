@@ -441,6 +441,38 @@
         "Street performer",
         "Dogcatcher"
       ]
+    },
+    {
+      "name": "Soccer stadium",
+      "roles": [
+        "Spy",
+        "Player",
+        "Supporter",
+        "Hooligan",
+        "Coach",
+        "Security guard",
+        "Medic",
+        "Masseur",
+        "Reporter",
+        "Commentator",
+        "Referee"
+      ]
+    },
+    {
+      "name": "Rock concert",
+      "roles": [
+        "Spy",
+        "Singer",
+        "Guitarist",
+        "Drummer",
+        "Fan",
+        "Sound technician",
+        "Ticketer",
+        "Secuirity guard",
+        "Light technician",
+        "Band manager",
+        "Music critic"
+      ]
     }
   ],
   "text": {

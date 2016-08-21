@@ -441,6 +441,38 @@
         "Artista di strada",
         "Accalappiacani"
       ]
+    },
+    {
+      "name": "Stadio di calcio",
+      "roles": [
+        "Spia",
+        "Calciatore",
+        "Tifoso",
+        "Hooligan",
+        "Allenatore",
+        "Guardia",
+        "Medico",
+        "Massaggiatore",
+        "Giornalista",
+        "Telecronista",
+        "Arbitro"
+      ]
+    },
+    {
+      "name": "Concerto rock",
+      "roles": [
+        "Spia",
+        "Cantante",
+        "Chitarrista",
+        "Batterista",
+        "Fan",
+        "Tecnico del suono",
+        "Bigliettaio",
+        "Guardia",
+        "Tecnico delle luci",
+        "Manager della band",
+        "Critico musicale"
+      ]
     }
   ],
   "text": {
