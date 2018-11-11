@@ -84,8 +84,6 @@ With my version I changed some behaviours and part of the structure of the game,
 
  - I added three spy-themed music tracks at the end of the page, which can be activated only if wanted (save Internet data)
  
- - I added a banner alerting about cookie use
- 
  - language and name can be changed more easily and during the game without any problems
  
  - error messages are actively shown explaining what went wrong

@@ -37,7 +37,6 @@ if (! isset($_COOKIE['language']) || ! file_exists("lang/" . $_COOKIE['language'
     <link rel='stylesheet' type='text/css' href="main.css">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="cookies.js"></script>
 </head>
 <body>
 <script>
